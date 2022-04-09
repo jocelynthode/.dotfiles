@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-feh --bg-fill /home/jocelyn/Pictures/leaves.jpg
+notify-send -i display "Display profile" "$AUTORANDR_CURRENT_PROFILE"
+
+feh --bg-fill /home/jocelyn/Pictures/space/wp4575300.jpg
