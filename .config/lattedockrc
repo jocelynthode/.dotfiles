@@ -1,0 +1,46 @@
+[FileDialogSize]
+DP-2 HDMI-0 Height 2560x1440=769
+DP-2 HDMI-0 Width 2560x1440=1300
+
+[KFileDialog Settings]
+listViewIconSize=16
+
+[LatteSettingsDialog]
+downloadWindowSize=980,600
+windowSize=1100,752
+
+[LatteSettingsDialog][DetailsDialog]
+windowSize=560,640
+
+[LatteSettingsDialog][TabLayouts]
+columnWidths=55,508,129,104
+sortColumn=3
+sortOrder=0
+
+[LatteSettingsDialog][ViewsDialog]
+columnWidths=59,256,142,135,131
+sortColumn=2
+sortOrder=0
+windowSize=980,683
+
+[PlasmaThemeExtended]
+outlineWidth=1
+
+[ScreenConnectors]
+10=DP-2:::1920,0 2560x1440
+11=HDMI-0:::0,0 1920x1080
+
+[UniversalSettings]
+badges3DStyle=false
+canDisableBorders=true
+contextMenuActionsAlwaysShown=_layouts,_preferences,_quit_latte,_separator1,_add_latte_widgets,_add_view
+inAdvancedModeForEditSettings=true
+isAvailableGeometryBroadcastedToPlasma=true
+launchers=
+memoryUsage=0
+metaPressAndHoldEnabled=false
+mouseSensitivity=1
+screenTrackerInterval=2500
+showInfoWindow=true
+singleModeLayoutName=desktop
+version=2
