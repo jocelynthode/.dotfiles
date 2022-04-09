@@ -224,7 +224,7 @@ bindsym $mod+r mode "resize"
 #}
 # WS6 for firefoxdeveloperedition ?
 assign [class="firefoxdeveloperedition"] $ws2
-for_window [class="firefoxdeveloperedition" title="Inbox - jocelyn.thode@liip.ch - Liip Mail — Firefox Developer Edition"] move container to workspace $ws3
+for_window [class="firefoxdeveloperedition" title=".+jocelyn.thode@liip.ch - Liip Mail — Firefox Developer Edition"] move container to workspace $ws3
 assign [class="kalendar"] $ws3
 assign [class="Steam"] $ws4
 assign [class="Signal"] $ws7
