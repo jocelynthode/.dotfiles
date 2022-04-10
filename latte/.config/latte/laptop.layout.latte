@@ -52,34 +52,18 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][1][Applets][62][Configuration]
-PreloadWeight=17
+PreloadWeight=37
 
 [Containments][1][Applets][62][Configuration][Appearance]
 dateDisplayFormat=BesideTime
 dateFormat=longDate
-showSeconds=true
-enabledCalendarPlugins=/usr/lib/qt/plugins/plasmacalendarplugins/pimevents.so,/usr/lib/qt/plugins/plasmacalendarplugins/holidaysevents.so
+enabledCalendarPlugins=/usr/lib/qt/plugins/plasmacalendarplugins/pimevents.so
 firstDayOfWeek=1
+showSeconds=true
 
 [Containments][1][Applets][62][Configuration][ConfigDialog]
 DialogHeight=1452
 DialogWidth=1116
-
-[Containments][1][Applets][64]
-immutability=1
-plugin=org.kde.plasma.pager
-
-[Containments][1][Applets][64][Configuration]
-PreloadWeight=0
-
-[Containments][1][Applets][64][Configuration][ConfigDialog]
-DialogHeight=1367
-DialogWidth=841
-
-[Containments][1][Applets][64][Configuration][General]
-currentDesktopSelected=ShowDesktop
-displayedText=Name
-showWindowIcons=true
 
 [Containments][1][Applets][76]
 immutability=1
@@ -141,6 +125,9 @@ totalSensors=["disk/all/usedPercent"]
 immutability=1
 plugin=org.kde.plasma.systemmonitor
 
+[Containments][1][Applets][79][Configuration]
+PreloadWeight=60
+
 [Containments][1][Applets][79][Configuration][Appearance]
 chartFace=org.kde.ksysguard.linechart
 title=Hard Disk Activity
@@ -156,6 +143,26 @@ disk/all/write=69,133,136
 [Containments][1][Applets][79][Configuration][Sensors]
 highPrioritySensorIds=["disk/all/write","disk/all/read"]
 
+[Containments][1][Applets][80]
+immutability=1
+plugin=org.kde.plasma.virtualdesktopbar
+
+[Containments][1][Applets][80][Configuration][ConfigDialog]
+DialogHeight=1452
+DialogWidth=1116
+
+[Containments][1][Applets][80][Configuration][Preferences]
+AddDesktopButtonShow=false
+DesktopIndicatorsCustomColorForCurrentDesktop=#458588
+DesktopIndicatorsCustomColorForDesktopsNeedingAttention=#cc241d
+DesktopIndicatorsCustomColorForIdleDesktops=#928374
+DesktopIndicatorsCustomColorForOccupiedIdleDesktops=#ebdbb2
+DesktopIndicatorsDistinctForDesktopsNeedingAttention=true
+DesktopIndicatorsStyleLineThickness=4
+DesktopLabelsBoldFontForCurrentDesktop=true
+MouseWheelRemoveDesktopOnClick=false
+MouseWheelSwitchDesktopOnScroll=false
+
 [Containments][1][ConfigDialog]
 DialogHeight=600
 DialogWidth=586
@@ -167,7 +174,7 @@ PreloadWeight=0
 advanced=false
 alignment=10
 alignmentUpgraded=true
-appletOrder=4;64;62;76;79;77;5
+appletOrder=4;80;62;76;79;77;5
 appletShadowsEnabled=false
 autoDecreaseIconSize=false
 autoSizeEnabled=false
@@ -278,7 +285,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][6][Applets][70][Configuration]
-PreloadWeight=21
+PreloadWeight=31
 
 [Containments][6][Applets][73]
 immutability=1
