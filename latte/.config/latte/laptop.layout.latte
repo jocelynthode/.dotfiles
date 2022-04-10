@@ -84,10 +84,10 @@ immutability=1
 plugin=org.kde.plasma.systemmonitor
 
 [Containments][1][Applets][76][Configuration]
-PreloadWeight=85
+PreloadWeight=100
 
 [Containments][1][Applets][76][Configuration][Appearance]
-chartFace=org.kde.ksysguard.horizontalbars
+chartFace=org.kde.ksysguard.barchart
 title=System Ressources
 updateRateLimit=2000
 
@@ -98,9 +98,14 @@ DialogWidth=1116
 [Containments][1][Applets][76][Configuration][SensorColors]
 cpu/all/usage=69,133,136
 memory/physical/used=104,157,106
+memory/physical/usedPercent=104,157,106
+
+[Containments][1][Applets][76][Configuration][SensorLabels]
+cpu/all/usage=CPU Usage
+memory/physical/usedPercent=Memory Usage
 
 [Containments][1][Applets][76][Configuration][Sensors]
-highPrioritySensorIds=["cpu/all/usage","memory/physical/used"]
+highPrioritySensorIds=["cpu/all/usage","memory/physical/usedPercent"]
 lowPrioritySensorIds=["cpu/all/cpuCount","cpu/all/coreCount","memory/physical/total"]
 totalSensors=["cpu/all/usage"]
 
@@ -109,7 +114,7 @@ immutability=1
 plugin=org.kde.plasma.systemmonitor
 
 [Containments][1][Applets][77][Configuration]
-PreloadWeight=90
+PreloadWeight=100
 
 [Containments][1][Applets][77][Configuration][Appearance]
 chartFace=org.kde.ksysguard.horizontalbars
@@ -122,7 +127,7 @@ DialogWidth=1116
 [Containments][1][Applets][77][Configuration][SensorColors]
 cpu/all/system=233,61,174
 disk/.*/usedPercent=61,174,233
-disk/49748d87-5866-4ea8-8055-5f0cc29bbf40/usedPercent=152,151,26
+disk/49748d87-5866-4ea8-8055-5f0cc29bbf40/usedPercent=215,153,33
 disk/all/usedPercent=177,98,134
 
 [Containments][1][Applets][77][Configuration][Sensors]
