@@ -2,18 +2,22 @@
 migrated=true
 
 [Plugins]
+CharacterRunnerEnabled=false
 DictionaryEnabled=false
 Kill RunnerEnabled=false
-PowerDevilEnabled=false
+PowerDevilEnabled=true
 Spell CheckerEnabled=false
+appstreamEnabled=false
 appstreamrunnerEnabled=false
 baloosearchEnabled=false
 bookmarksEnabled=false
-calculatorEnabled=false
-desktopsessionsEnabled=false
+calculatorEnabled=true
+desktopsessionsEnabled=true
 katesessionsEnabled=false
+krunner_spellcheckEnabled=false
 kwinEnabled=false
 locationsEnabled=false
+org.kde.activities2Enabled=false
 org.kde.activitiesEnabled=false
 org.kde.datetimeEnabled=false
 org.kde.windowedwidgetsEnabled=false
