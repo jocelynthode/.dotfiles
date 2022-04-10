@@ -259,8 +259,8 @@ for_window [class="org.remmina.Remmina"] floating enable; border none
 for_window [class="Last Epoch.x86_64"] floating enable; border none
 
 #smart_gaps on
-gaps inner 7
-gaps outer -2
+gaps inner 10
+gaps outer -3
 default_border pixel 0
 default_floating_border pixel 0
 
