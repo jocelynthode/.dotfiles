@@ -49,6 +49,7 @@ bindsym XF86AudioMicMute exec --no-startup-id qdbus org.kde.kglobalaccel /compon
 floating_modifier $mod
 
 workspace_auto_back_and_forth yes
+focus_on_window_activation focus
 focus_follows_mouse yes
 
 # start a terminal
