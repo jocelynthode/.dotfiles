@@ -27,7 +27,7 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][1][Applets][4][Configuration]
-PreloadWeight=5
+PreloadWeight=10
 
 [Containments][1][Applets][4][Configuration][ConfigDialog]
 DialogHeight=655
@@ -44,7 +44,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][1][Applets][62][Configuration]
-PreloadWeight=41
+PreloadWeight=46
 
 [Containments][1][Applets][62][Configuration][Appearance]
 dateDisplayFormat=BesideTime
@@ -54,13 +54,6 @@ showSeconds=true
 [Containments][1][Applets][62][Configuration][ConfigDialog]
 DialogHeight=1394
 DialogWidth=1268
-
-[Containments][1][Applets][63]
-immutability=1
-plugin=org.kde.plasma.minimizeall
-
-[Containments][1][Applets][63][Configuration]
-PreloadWeight=0
 
 [Containments][1][Applets][64]
 immutability=1
@@ -83,8 +76,133 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][1][Applets][68][Configuration]
-PreloadWeight=80
+PreloadWeight=100
 SystrayContainmentId=69
+
+[Containments][1][Applets][83]
+immutability=1
+plugin=org.kde.plasma.systemmonitor
+
+[Containments][1][Applets][83][Configuration]
+PreloadWeight=100
+
+[Containments][1][Applets][83][Configuration][Appearance]
+chartFace=org.kde.ksysguard.horizontalbars
+title=Disk Usage
+updateRateLimit=4000
+
+[Containments][1][Applets][83][Configuration][ConfigDialog]
+DialogHeight=1394
+DialogWidth=1268
+
+[Containments][1][Applets][83][Configuration][FaceGrid][Appearance]
+chartFace=org.kde.ksysguard.linechart
+showTitle=false
+
+[Containments][1][Applets][83][Configuration][FaceGrid][SensorColors]
+disk/.*/usedPercent=61,174,233
+disk/all/usedPercent=174,233,61
+disk/c04784b8-5ea4-48ab-ac41-7e1f9e409cc8/usedPercent=233,61,174
+disk/e4291dcb-0667-4632-b648-d09e2dd1e3f5/usedPercent=61,174,233
+
+[Containments][1][Applets][83][Configuration][FaceGrid][Sensors]
+highPrioritySensorIds=["disk/all/usedPercent"]
+
+[Containments][1][Applets][83][Configuration][SensorColors]
+disk/.*/usedPercent=61,174,233
+disk/all/usedPercent=174,233,61
+disk/c04784b8-5ea4-48ab-ac41-7e1f9e409cc8/usedPercent=233,61,174
+disk/e4291dcb-0667-4632-b648-d09e2dd1e3f5/usedPercent=61,174,233
+
+[Containments][1][Applets][83][Configuration][Sensors]
+highPrioritySensorIds=["disk/e4291dcb-0667-4632-b648-d09e2dd1e3f5/usedPercent","disk/c04784b8-5ea4-48ab-ac41-7e1f9e409cc8/usedPercent"]
+lowPrioritySensorIds=["disk/all/total"]
+totalSensors=["disk/all/usedPercent"]
+
+[Containments][1][Applets][84]
+immutability=1
+plugin=org.kde.plasma.systemmonitor
+
+[Containments][1][Applets][84][Configuration]
+PreloadWeight=55
+
+[Containments][1][Applets][84][Configuration][Appearance]
+chartFace=org.kde.ksysguard.linechart
+title=Hard Disk Activity
+
+[Containments][1][Applets][84][Configuration][ConfigDialog]
+DialogHeight=1034
+DialogWidth=948
+
+[Containments][1][Applets][84][Configuration][SensorColors]
+disk/all/read=233,120,61
+disk/all/write=61,174,233
+
+[Containments][1][Applets][84][Configuration][Sensors]
+highPrioritySensorIds=["disk/all/write","disk/all/read"]
+
+[Containments][1][Applets][86]
+immutability=1
+plugin=org.kde.plasma.systemmonitor
+
+[Containments][1][Applets][86][Configuration]
+PreloadWeight=55
+
+[Containments][1][Applets][86][Configuration][Appearance]
+chartFace=org.kde.ksysguard.textonly
+title=Memory Usage
+updateRateLimit=3000
+
+[Containments][1][Applets][86][Configuration][ConfigDialog]
+DialogHeight=1034
+DialogWidth=948
+
+[Containments][1][Applets][86][Configuration][FaceGrid][Appearance]
+chartFace=org.kde.ksysguard.linechart
+showTitle=false
+
+[Containments][1][Applets][86][Configuration][FaceGrid][SensorColors]
+memory/physical/used=61,174,233
+
+[Containments][1][Applets][86][Configuration][FaceGrid][Sensors]
+highPrioritySensorIds=["memory/physical/used"]
+
+[Containments][1][Applets][86][Configuration][SensorColors]
+cpu/all/usage=233,61,177
+memory/physical/used=61,174,233
+
+[Containments][1][Applets][86][Configuration][Sensors]
+highPrioritySensorIds=["memory/physical/used"]
+lowPrioritySensorIds=["memory/physical/total"]
+totalSensors=["memory/physical/usedPercent"]
+
+[Containments][1][Applets][86][Configuration][org.kde.ksysguard.barchart][General]
+barChartStacked=true
+
+[Containments][1][Applets][87]
+immutability=1
+plugin=org.kde.plasma.systemmonitor
+
+[Containments][1][Applets][87][Configuration]
+PreloadWeight=55
+
+[Containments][1][Applets][87][Configuration][Appearance]
+chartFace=org.kde.ksysguard.textonly
+showTitle=true
+title=Total CPU Use
+updateRateLimit=1000
+
+[Containments][1][Applets][87][Configuration][ConfigDialog]
+DialogHeight=1394
+DialogWidth=1268
+
+[Containments][1][Applets][87][Configuration][SensorColors]
+cpu/all/usage=61,174,233
+
+[Containments][1][Applets][87][Configuration][Sensors]
+highPrioritySensorIds=["cpu/all/usage"]
+lowPrioritySensorIds=["cpu/all/cpuCount","cpu/all/coreCount"]
+totalSensors=["cpu/all/usage"]
 
 [Containments][1][ConfigDialog]
 DialogHeight=600
@@ -97,7 +215,7 @@ PreloadWeight=0
 advanced=false
 alignment=10
 alignmentUpgraded=true
-appletOrder=4;64;62;68;63
+appletOrder=4;64;62;87;86;84;83;68
 appletShadowsEnabled=false
 autoDecreaseIconSize=false
 autoSizeEnabled=false
@@ -110,7 +228,7 @@ iconSize=24
 inConfigureAppletsMode=true
 panelPosition=10
 panelSize=100
-panelTransparency=59
+panelTransparency=80
 plasmaBackgroundForPopups=true
 shadowOpacity=15
 shadowSize=45
@@ -209,7 +327,7 @@ iconSize=24
 inConfigureAppletsMode=true
 panelPosition=10
 panelSize=100
-panelTransparency=59
+panelTransparency=80
 plasmaBackgroundForPopups=true
 screenEdgeMargin=0
 shadowOpacity=15
@@ -244,11 +362,14 @@ immutability=1
 plugin=org.kde.kdeconnect
 
 [Containments][69][Applets][70][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][69][Applets][71]
 immutability=1
 plugin=org.kde.plasma.clipboard
+
+[Containments][69][Applets][71][Configuration]
+PreloadWeight=60
 
 [Containments][69][Applets][72]
 immutability=1
@@ -278,20 +399,33 @@ plugin=org.kde.plasma.notifications
 immutability=1
 plugin=org.kde.plasma.volume
 
+[Containments][69][Applets][78][Configuration]
+PreloadWeight=60
+
 [Containments][69][Applets][79]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][69][Applets][79][Configuration]
-PreloadWeight=55
+PreloadWeight=75
 
 [Containments][69][Applets][80]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
+[Containments][69][Applets][80][Configuration]
+PreloadWeight=65
+
 [Containments][69][Applets][81]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
+
+[Containments][69][Applets][81][Configuration]
+PreloadWeight=60
+
+[Containments][69][Applets][81][Configuration][ConfigDialog]
+DialogHeight=1394
+DialogWidth=1268
 
 [Containments][69][Applets][82]
 immutability=1
