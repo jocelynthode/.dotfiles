@@ -1,4 +1,4 @@
-set -x EDITOR nvim
+set -Ux EDITOR nvim
 set -g fish_greeting
 if status is-interactive
     # Commands to run in interactive sessions can go here
@@ -6,6 +6,7 @@ if status is-interactive
   kubectl completion fish | source
 
   alias k='kubectl'
+  alias keti='kubectl exec -ti'
   alias cat='bat'
   alias find='fd'
   alias vi="nvim"
