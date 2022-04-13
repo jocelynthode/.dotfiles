@@ -8,5 +8,7 @@ if status is-interactive
   alias k='kubectl'
   alias cat='bat'
   alias find='fd'
+  alias vi="nvim"
+  alias vim="nvim"
 end
 
