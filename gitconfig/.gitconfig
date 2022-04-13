@@ -18,3 +18,7 @@
 
 [diff]
     colorMoved = default
+
+[delta]
+    line-numbers = true
+    side-by-side = true
