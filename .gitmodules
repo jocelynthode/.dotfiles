@@ -1,4 +1,5 @@
 [submodule "tasks"]
-	path = tasks
-	url = git@github.com:jocelynthode/tasks.git
+  path = tasks
+  url = git@github.com:jocelynthode/tasks.git
   branch = main
+  update = merge
