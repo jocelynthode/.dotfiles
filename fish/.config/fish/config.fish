@@ -4,6 +4,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
   starship init fish | source
   kubectl completion fish | source
+  fish_vi_key_bindings
 
   alias k='kubectl'
   alias keti='kubectl exec -ti'
