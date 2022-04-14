@@ -1,5 +1,5 @@
 set -Ux EDITOR nvim
-set -g fish_greeting
+set -U fish_greeting
 
 if test -z (pgrep ssh-agent | string collect)
   eval (ssh-agent -c)
