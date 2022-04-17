@@ -1,5 +1,7 @@
 set -Ux EDITOR nvim
 set -U fish_greeting
+set -gx fish_key_bindings fish_user_key_bindings
+
 
 if test -z (pgrep ssh-agent | string collect)
   eval (ssh-agent -c)
@@ -9,7 +11,6 @@ end
 if status is-interactive
   # Commands to run in interactive sessions can go here
   kubectl completion fish | source
-  fish_vi_key_bindings
 
   alias k='kubectl'
   alias keti='kubectl exec -ti'
