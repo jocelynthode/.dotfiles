@@ -8,7 +8,7 @@
             "knee": 9.0,
             "makeup": 0.0,
             "output-gain": 0.0,
-            "range": -14.99999999999999,
+            "range": -5.0,
             "ratio": 2.0,
             "release": 100.0,
             "stereo-link": "Average",
