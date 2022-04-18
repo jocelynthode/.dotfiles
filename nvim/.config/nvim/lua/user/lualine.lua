@@ -5,7 +5,8 @@ end
 
 lualine.setup({
 	options = {
-		theme = "gruvbox",
+		theme = "auto",
+    globalstatus = true,
 	},
 	extensions = {
 		"fugitive",
