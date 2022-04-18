@@ -1,0 +1,29 @@
+- 1.1.3rc2
+- _NAME: G915 TKL LIGHTSPEED Wireless RGB Mechanical Gaming Keyboard
+  _absent: [hi-res-scroll, lowres-smooth-scroll, hires-smooth-invert, hires-smooth-resolution, smart-shift, thumb-scroll-mode, thumb-scroll-invert, pointer_speed,
+    dpi, dpi-sliding, speed-change, mouse-gestures, backlight, backlight-timed, fn-swap, reprogrammable-keys, persistent-remappable-keys, disable-keyboard-keys,
+    divert-crown, crown-smooth, multiplatform, gesture2-gestures, gesture2-divert, gesture2-params, lowres-scroll-mode, hires-scroll-mode]
+  _modelId: B35F408EC343
+  _sensitive: {change-host: false, divert-keys: false, report_rate: false}
+  _serial: EC762B99
+  _unitId: EC762B99
+  _wpid: 408E
+  divert-gkeys: false
+  divert-keys: {209: 0, 210: 0}
+  m-key-leds: {1: false, 2: false, 4: false}
+  mr-key-led: false
+  onboard_profiles: 1
+  report_rate: 1
+- _NAME: PRO X Wireless
+  _absent: [hi-res-scroll, lowres-smooth-scroll, hires-smooth-invert, hires-smooth-resolution, smart-shift, thumb-scroll-mode, thumb-scroll-invert, pointer_speed,
+    dpi-sliding, speed-change, mouse-gestures, backlight, backlight-timed, fn-swap, reprogrammable-keys, persistent-remappable-keys, divert-keys, disable-keyboard-keys,
+    divert-crown, crown-smooth, divert-gkeys, m-key-leds, mr-key-led, multiplatform, change-host, gesture2-gestures, gesture2-divert, gesture2-params, lowres-scroll-mode,
+    hires-scroll-mode]
+  _modelId: 4093C0940000
+  _sensitive: {dpi: false}
+  _serial: E7C3DFD4
+  _unitId: E7C3DFD4
+  _wpid: '4093'
+  dpi: '1600'
+  onboard_profiles: 1
+  report_rate: 1
