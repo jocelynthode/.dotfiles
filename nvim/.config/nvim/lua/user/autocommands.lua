@@ -1,37 +1,48 @@
-vim.cmd([[
-  augroup _general_settings
-    autocmd!
-    autocmd FileType qf,help,man,lspinfo nnoremap <silent> <buffer> q :close<CR> 
-    autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200}) 
-    autocmd BufWinEnter * :set formatoptions-=cro
-    autocmd FileType qf set nobuflisted
-  augroup end
+local _text = vim.api.nvim_create_augroup("_text", { clear = true })
 
-  augroup _git
-    autocmd!
-    autocmd FileType gitcommit setlocal wrap
-    autocmd FileType gitcommit setlocal spell
-  augroup end
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "text", "markdown", "gitcommit" },
+	callback = function()
+		vim.api.nvim_command("setlocal spell")
+		vim.api.nvim_command("setlocal wrap")
+	end,
+	group = _text,
+})
+-------------------
 
-  augroup _markdown
-    autocmd!
-    autocmd FileType markdown setlocal wrap
-    autocmd FileType markdown setlocal spell
-  augroup end
+local _general_settings = vim.api.nvim_create_augroup("_general_settings", { clear = true })
 
-  augroup _auto_resize
-    autocmd!
-    autocmd VimResized * tabdo wincmd = 
-  augroup end
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "qf", "help", "man", "lspinfo", "fugitive" },
+	command = "nnoremap <silent> <buffer> q :close<CR>",
+	group = _general_settings,
+})
 
-  augroup _alpha
-    autocmd!
-    autocmd User AlphaReady set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2
-  augroup end
-]])
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+	pattern = { "*" },
+	callback = function()
+		require("vim.highlight").on_yank({ higroup = "Visual", timeout = 200 })
+	end,
+	group = _general_settings,
+})
 
--- Autoformat
--- augroup _lsp
---   autocmd!
---   autocmd BufWritePre * lua vim.lsp.buf.formatting()
--- augroup end
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+	pattern = { "*" },
+	command = "set formatoptions-=cro",
+	group = _general_settings,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "qf" },
+	command = "set nobuflisted",
+	group = _general_settings,
+})
+-------------------
+
+local _auto_resize = vim.api.nvim_create_augroup("_auto_resize", { clear = true })
+
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+	pattern = { "*" },
+	command = "tabdo wincmd =",
+	group = _auto_resize,
+})
