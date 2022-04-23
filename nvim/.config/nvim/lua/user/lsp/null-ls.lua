@@ -14,16 +14,26 @@ null_ls.setup({
 	sources = {
 		formatting.prettier,
 		formatting.stylua,
-        code_actions.gitsigns,
-        diagnostics.gitlint,
-        diagnostics.yamllint,
-        -- Shell
-        formatting.shfmt,
-        diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
-        -- Python
-        formatting.black,
-        diagnostics.flake8,
-        -- Terraform
-        formatting.terraform_fmt,
+		code_actions.gitsigns,
+		diagnostics.gitlint,
+		diagnostics.yamllint,
+		-- Shell
+		formatting.shfmt,
+		diagnostics.shellcheck.with({ diagnostics_format = "#{m} [#{c}]" }),
+		-- Python
+		formatting.black,
+		diagnostics.flake8,
+		-- Terraform
+		formatting.terraform_fmt,
 	},
+	on_attach = function(client)
+		if client.resolved_capabilities.document_formatting then
+			vim.cmd([[
+            augroup LspFormatting
+                autocmd! * <buffer>
+                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+            augroup END
+            ]])
+		end
+	end,
 })

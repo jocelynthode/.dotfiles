@@ -239,6 +239,7 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
 for_window [class="easyeffects"] floating enable; border none
+for_window [class="ProtonUp-Qt"] floating enable
 for_window [class="yakuake"] floating enable
 for_window [class="systemsettings"] floating enable
 for_window [class="plasmashell"] floating enable;
