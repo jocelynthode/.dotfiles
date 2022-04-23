@@ -8,6 +8,7 @@ migrated=true
 CharacterRunnerEnabled=false
 DictionaryEnabled=false
 Kill RunnerEnabled=false
+PIM Contacts Search RunnerEnabled=false
 PowerDevilEnabled=true
 Spell CheckerEnabled=false
 appstreamEnabled=false
