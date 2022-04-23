@@ -233,6 +233,7 @@ assign [class="Slack"] $ws7
 assign [class="discord"] $ws7
 assign [class="Mumble"] $ws7
 for_window [class="Spotify"] move container to workspace $ws8
+for_window [class="Deezer"] move container to workspace $ws8
 assign [class="Bitwarden"] $ws9
 
 for_window [window_role="pop-up"] floating enable
