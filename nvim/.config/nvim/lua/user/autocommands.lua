@@ -53,7 +53,7 @@ local _number_toggle = vim.api.nvim_create_augroup("_number_toggle", { clear = t
 vim.api.nvim_create_autocmd({ "InsertEnter", "BufLeave", "FocusLost", "WinLeave" }, {
 	pattern = { "*" },
 	callback = function()
-		if vim.opt.relativenumber:get() then
+		if vim.opt.number:get() and vim.opt.relativenumber:get() then
 			vim.opt.relativenumber = false
 		end
 	end,
@@ -63,7 +63,7 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "BufLeave", "FocusLost", "WinLeave"
 vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter", "FocusGained", "WinEnter" }, {
 	pattern = { "*" },
 	callback = function()
-		if not vim.opt.relativenumber:get() then
+		if vim.opt.number:get() and not vim.opt.relativenumber:get() then
 			vim.opt.relativenumber = true
 		end
 	end,
