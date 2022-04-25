@@ -68,6 +68,7 @@ return packer.startup(function(use)
 	use({ "schtibe/taxi.vim", ft = "taxi" })
 	use("max397574/better-escape.nvim")
 	use("farmergreg/vim-lastplace")
+	use("nathom/filetype.nvim")
 	-- Colorschemes
 	-- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
 	use("ellisonleao/gruvbox.nvim")
