@@ -46,26 +46,3 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 	command = "tabdo wincmd =",
 	group = _auto_resize,
 })
--------------------
-
-local _number_toggle = vim.api.nvim_create_augroup("_number_toggle", { clear = true })
-
-vim.api.nvim_create_autocmd({ "InsertEnter", "BufLeave", "FocusLost", "WinLeave" }, {
-	pattern = { "*" },
-	callback = function()
-		if vim.opt.number:get() and vim.opt.relativenumber:get() then
-			vim.opt.relativenumber = false
-		end
-	end,
-	group = _number_toggle,
-})
-
-vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter", "FocusGained", "WinEnter" }, {
-	pattern = { "*" },
-	callback = function()
-		if vim.opt.number:get() and not vim.opt.relativenumber:get() then
-			vim.opt.relativenumber = true
-		end
-	end,
-	group = _number_toggle,
-})
