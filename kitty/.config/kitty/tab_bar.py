@@ -82,7 +82,7 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    _draw_icon(screen, index, symbol="  \uf490  ")
+    _draw_icon(screen, index, symbol="  \uf120  ")
     _draw_left_status(
         draw_data,
         screen,
