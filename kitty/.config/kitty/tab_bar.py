@@ -49,19 +49,10 @@ def _draw_left_status(
     if draw_data.leading_spaces:
         screen.draw(" " * draw_data.leading_spaces)
 
-    # TODO: https://github.com/kovidgoyal/kitty/discussions/4447#discussioncomment-2463083
-    # tm = get_boss().active_tab_manager
-    #     if tm is not None:
-    #         w = tm.active_window
-    #         if w is not None:
-    #             cwd = w.cwd_of_child or ''
-    #             log_error(cwd)
-
     draw_title(draw_data, screen, tab, index)
     trailing_spaces = min(max_title_length - 1, draw_data.trailing_spaces)
     max_title_length -= trailing_spaces
     extra = screen.cursor.x - before - max_title_length
-    screen.draw("▎")
     if extra > 0:
         screen.cursor.x -= extra + 1
         screen.draw("…")
@@ -70,10 +61,14 @@ def _draw_left_status(
     end = screen.cursor.x
     screen.cursor.bold = screen.cursor.italic = False
     screen.cursor.fg = 0
-    if not is_last:
-        screen.cursor.bg = as_rgb(color_as_int(draw_data.inactive_bg))
-        screen.draw(draw_data.sep)
     screen.cursor.bg = 0
+    if not is_last:
+        screen.cursor.fg = (
+            as_rgb(color_as_int(Color(131, 182, 175)))
+            if tab.is_active
+            else as_rgb(color_as_int(Color(60, 71, 77)))
+        )
+        screen.draw(draw_data.sep)
     return end
 
 

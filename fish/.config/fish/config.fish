@@ -12,7 +12,8 @@ if status is-interactive
   # Commands to run in interactive sessions can go here
   kubectl completion fish | source
 
-  alias k='kubectl'
+  abbr -a k kubectl
+  abbr -a t terraform
   alias keti='kubectl exec -ti'
   alias cat='bat'
   alias find='fd'
