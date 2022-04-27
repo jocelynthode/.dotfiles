@@ -1,6 +1,8 @@
 {
     "input": {
-        "blocklist": [],
+        "blocklist": [
+            "Guitar Monitor"
+        ],
         "gate": {
             "attack": 5.0,
             "detection": "RMS",
