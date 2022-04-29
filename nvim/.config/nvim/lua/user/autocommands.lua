@@ -1,7 +1,7 @@
 local _text = vim.api.nvim_create_augroup("_text", { clear = true })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-	pattern = { "text", "markdown", "gitcommit" },
+	pattern = { "text", "markdown", "gitcommit", "taxi" },
 	callback = function()
 		vim.api.nvim_command("setlocal spell")
 		vim.api.nvim_command("setlocal wrap")
