@@ -8,6 +8,7 @@ local formatting = null_ls.builtins.formatting
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
 local diagnostics = null_ls.builtins.diagnostics
 local code_actions = null_ls.builtins.code_actions
+local LspFormatting = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 
 null_ls.setup({
 	debug = false,
@@ -26,16 +27,13 @@ null_ls.setup({
 		-- Terraform
 		formatting.terraform_fmt,
 	},
-	on_attach = function(client)
-		if client.resolved_capabilities.document_formatting then
-			local LspFormatting = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
-
-			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-				buffer = 0, -- Current buffer
-				callback = function()
-					vim.lsp.buf.formatting_sync()
-				end,
+	on_attach = function(client, bufnr)
+		if client.supports_method("textDocument/formatting") then
+			vim.api.nvim_clear_autocmds({ group = LspFormatting, buffer = bufnr })
+			vim.api.nvim_create_autocmd("BufWritePre", {
 				group = LspFormatting,
+				buffer = bufnr,
+				callback = vim.lsp.buf.formatting_sync,
 			})
 		end
 	end,
