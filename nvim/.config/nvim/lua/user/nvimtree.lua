@@ -51,7 +51,14 @@ local tree_cb = nvim_tree_config.nvim_tree_callback
 nvim_tree.setup({
 	filters = {
 		dotfiles = false,
-		exclude = { "custom" },
+		custom = {
+			".git$",
+			"target$",
+			"node_modules$",
+			".cache$",
+			"Cargo.lock$",
+			".terraform$",
+		},
 	},
 	disable_netrw = false,
 	hijack_netrw = true,
