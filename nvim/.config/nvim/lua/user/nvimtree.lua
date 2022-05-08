@@ -1,26 +1,3 @@
--- following options are the default
--- each of these are documented in `:help nvim-tree.OPTION_NAME`
-vim.g.nvim_tree_icons = {
-	default = "",
-	symlink = "",
-	git = {
-		unstaged = "",
-		staged = "S",
-		unmerged = "",
-		renamed = "➜",
-		deleted = "",
-		untracked = "U",
-		ignored = "◌",
-	},
-	folder = {
-		default = "",
-		open = "",
-		empty = "",
-		empty_open = "",
-		symlink = "",
-	},
-}
-
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then
 	return
@@ -31,12 +8,53 @@ if not config_status_ok then
 	return
 end
 
+-- globals must be set prior to requiring nvim-tree to function
+local g = vim.g
+
+g.nvim_tree_add_trailing = 0
+g.nvim_tree_git_hl = 1
+g.nvim_tree_highlight_opened_files = 1
+
+g.nvim_tree_show_icons = {
+	folders = 1,
+	files = 1,
+	git = 1,
+	folder_arrows = 1,
+}
+
+g.nvim_tree_icons = {
+	default = "",
+	symlink = "",
+	git = {
+		deleted = "",
+		ignored = "◌",
+		renamed = "➜",
+		staged = "✓",
+		unmerged = "",
+		unstaged = "✗",
+		untracked = "★",
+	},
+	folder = {
+		default = "",
+		open = "",
+		empty = "",
+		empty_open = "",
+		symlink = "",
+		symlink_open = "",
+		arrow_open = "",
+		arrow_closed = "",
+	},
+}
+
 local tree_cb = nvim_tree_config.nvim_tree_callback
 
 nvim_tree.setup({
+	filters = {
+		dotfiles = false,
+		exclude = { "custom" },
+	},
 	disable_netrw = false,
 	hijack_netrw = true,
-	open_on_setup = true,
 	ignore_ft_on_setup = {
 		"startify",
 		"dashboard",
@@ -45,45 +63,16 @@ nvim_tree.setup({
 	},
 	open_on_tab = true,
 	hijack_cursor = true,
+	hijack_unnamed_buffer_when_opening = false,
 	update_cwd = true,
-	diagnostics = {
-		enable = true,
-		icons = {
-			hint = "",
-			info = "",
-			warning = "",
-			error = "",
-		},
-	},
 	update_focused_file = {
 		enable = true,
-		update_cwd = true,
-		ignore_list = {},
-	},
-	system_open = {
-		cmd = nil,
-		args = {},
-	},
-	filters = {
-		dotfiles = false,
-		custom = {
-			".git",
-			"target",
-			"node_modules",
-			".cache",
-			"Cargo.lock",
-			".terraform",
-		},
-	},
-	git = {
-		enable = true,
-		ignore = false,
-		timeout = 500,
+		update_cwd = false,
 	},
 	view = {
+		side = "left",
 		width = 30,
 		hide_root_folder = true,
-		side = "left",
 		mappings = {
 			custom_only = false,
 			list = {
@@ -92,20 +81,25 @@ nvim_tree.setup({
 				{ key = "v", cb = tree_cb("vsplit") },
 			},
 		},
-		number = false,
-		relativenumber = false,
 	},
-	trash = {
-		cmd = "trash",
-		require_confirm = true,
+	git = {
+		enable = true,
+		ignore = true,
 	},
 	actions = {
 		open_file = {
 			resize_window = true,
-			quit_on_open = false,
 		},
 	},
+	open_on_setup = true,
+	trash = {
+		cmd = "trash",
+		require_confirm = true,
+	},
 	renderer = {
+		indent_markers = {
+			enable = false,
+		},
 		icons = {
 			webdev_colors = true,
 		},
