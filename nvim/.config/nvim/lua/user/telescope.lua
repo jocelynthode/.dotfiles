@@ -4,16 +4,28 @@ if not status_ok then
 end
 
 local actions = require("telescope.actions")
-telescope.load_extension("media_files")
-telescope.load_extension("ui-select")
-telescope.load_extension("fzf")
 
 telescope.setup({
 	defaults = {
-
-		prompt_prefix = " ",
-		selection_caret = " ",
+		prompt_prefix = " ",
+		selection_caret = "❯ ",
 		path_display = { "smart" },
+		selection_strategy = "reset",
+		sorting_strategy = "ascending",
+		layout_strategy = "horizontal",
+		layout_config = {
+			horizontal = {
+				prompt_position = "top",
+				preview_width = 0.55,
+				results_width = 0.8,
+			},
+			vertical = {
+				mirror = false,
+			},
+			width = 0.87,
+			height = 0.80,
+			preview_cutoff = 120,
+		},
 
 		mappings = {
 			i = {
@@ -90,10 +102,12 @@ telescope.setup({
 		-- builtin picker
 	},
 	extensions = {
-		-- Your extension configuration goes here:
-		-- extension_name = {
-		--   extension_config_key = value,
-		-- }
-		-- please take a look at the readme of the extension you want to configure
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown({}),
+		},
 	},
 })
+
+telescope.load_extension("media_files")
+telescope.load_extension("ui-select")
+telescope.load_extension("fzf")
