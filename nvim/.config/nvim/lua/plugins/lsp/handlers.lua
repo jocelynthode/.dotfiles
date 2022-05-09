@@ -91,7 +91,7 @@ local function lsp_keymaps(bufnr)
   vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 end
 
-local utils = require("user.lsp.utils")
+local utils = require("plugins.lsp.utils")
 
 M.on_attach = function(client, bufnr)
   if client.name == "tsserver" then

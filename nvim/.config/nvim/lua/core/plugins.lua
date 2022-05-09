@@ -47,7 +47,7 @@ return packer.startup(function(use)
   use("kyazdani42/nvim-web-devicons")
   use("lewis6991/impatient.nvim")
   use("moll/vim-bbye")
-  use({"arkav/lualine-lsp-progress", after = "lualine.nvim"})
+  use({ "arkav/lualine-lsp-progress", after = "lualine.nvim" })
   use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
   use({ "schtibe/taxi.vim", ft = "taxi" })
   use({
@@ -112,23 +112,28 @@ return packer.startup(function(use)
 
   -- cmp plugins
   use({
-      "hrsh7th/nvim-cmp",
-      requires = {
-        { "hrsh7th/cmp-nvim-lsp" },
-        { "hrsh7th/cmp-nvim-lua" },
-        { "hrsh7th/cmp-buffer" },
-        { "hrsh7th/cmp-path" },
-        { "hrsh7th/cmp-cmdline" },
-      },
-      config = utils.require_plugin("cmp"),
-    })
+    "hrsh7th/nvim-cmp",
+    requires = {
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-nvim-lua" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-path" },
+      { "hrsh7th/cmp-cmdline" },
+    },
+    config = utils.require_plugin("cmp"),
+  })
 
 
   -- LSP
-  use("neovim/nvim-lspconfig") -- enable LSP
+  use({
+    "neovim/nvim-lspconfig",
+    config = utils.require_plugin("lsp")
+  }) -- enable LSP
   use("williamboman/nvim-lsp-installer") -- simple to use language server installer
   use("tamago324/nlsp-settings.nvim") -- language server settings defined in json for
-  use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+  }) -- for formatters and linters
 
   -- Telescope
   use({
