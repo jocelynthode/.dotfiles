@@ -47,7 +47,7 @@ return packer.startup(function(use)
   use("kyazdani42/nvim-web-devicons")
   use("lewis6991/impatient.nvim")
   use("moll/vim-bbye")
-  use({ "arkav/lualine-lsp-progress", after = "lualine.nvim" })
+  use("arkav/lualine-lsp-progress")
   use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
   use({ "schtibe/taxi.vim", ft = "taxi" })
   use({
