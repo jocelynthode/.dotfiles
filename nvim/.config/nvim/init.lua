@@ -1,3 +1,5 @@
+-- impatient must always be first
+require("user.impatient")
 require("user.options")
 require("user.keymaps")
 require("user.plugins")
@@ -18,5 +20,4 @@ require("user.indentline")
 require("user.autocommands")
 require("user.lualine")
 require("user.whichkey")
-require("user.impatient")
 require("user.dressing")
