@@ -19,7 +19,6 @@ null_ls.setup({
     }),
     code_actions.gitsigns,
     diagnostics.gitlint,
-    diagnostics.yamllint,
     -- Shell
     formatting.shfmt,
     diagnostics.shellcheck.with({ diagnostics_format = "#{m} [#{c}]" }),
