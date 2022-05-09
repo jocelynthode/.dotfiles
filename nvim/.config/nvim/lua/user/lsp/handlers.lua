@@ -97,6 +97,11 @@ M.on_attach = function(client, bufnr)
   if client.name == "tsserver" then
     client.resolved_capabilities.document_formatting = false
   end
+  -- force enable yamlls formatting feature
+  -- see https://github.com/redhat-developer/yaml-language-server/issues/486#issuecomment-1046792026
+  if client.name == "yamlls" then
+    client.resolved_capabilities.document_formatting = true
+  end
 
   lsp_keymaps(bufnr)
   lsp_highlight_document(client)
