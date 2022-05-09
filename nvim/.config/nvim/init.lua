@@ -1,23 +1,21 @@
--- impatient must always be first
-require("user.impatient")
-require("user.options")
-require("user.keymaps")
-require("user.plugins")
-require("user.colorscheme")
-require("user.cmp")
-require("user.lsp")
-require("user.telescope")
-require("user.treesitter")
-require("user.autopairs")
-require("user.surround")
-require("user.comment")
-require("user.gitsigns")
-require("user.nvimtree")
-require("user.bufferline")
-require("user.toggleterm")
-require("user.alpha")
-require("user.indentline")
-require("user.autocommands")
-require("user.lualine")
-require("user.whichkey")
-require("user.dressing")
+local status_ok, impatient = pcall(require, "impatient")
+
+if status_ok then
+  impatient.enable_profile()
+end
+
+local core_modules = {
+   "core.options",
+   "core.plugins",
+   "core.autocmds",
+   "core.mappings",
+}
+
+for _, module in ipairs(core_modules) do
+   local ok, err = pcall(require, module)
+   if not ok then
+      error("Error loading " .. module .. "\n\n" .. err)
+   end
+end
+
+vim.cmd[[colorscheme gruvbox]]

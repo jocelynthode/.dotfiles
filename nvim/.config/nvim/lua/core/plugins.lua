@@ -1,4 +1,5 @@
 local fn = vim.fn
+local utils = require("core.utils")
 
 -- Automatically install packer
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -39,53 +40,89 @@ packer.init({
   },
 })
 
--- Install your plugins here
 return packer.startup(function(use)
-  -- My plugins here
   use("wbthomason/packer.nvim") -- Have packer manage itself
-  use("nvim-lua/popup.nvim") -- An implementation of the Popup API from vim in Neovim
-  use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
-  use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp and treesitter
-  use("ur4ltz/surround.nvim")
-  use("numToStr/Comment.nvim") -- Easily comment stuff
+  use("nvim-lua/popup.nvim")
+  use("nvim-lua/plenary.nvim")
   use("kyazdani42/nvim-web-devicons")
-  use("kyazdani42/nvim-tree.lua")
+  use("lewis6991/impatient.nvim")
+  use("moll/vim-bbye")
+  use({"arkav/lualine-lsp-progress", after = "lualine.nvim"})
+  use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
+  use({ "schtibe/taxi.vim", ft = "taxi" })
+  use({
+    "max397574/better-escape.nvim",
+    event = "InsertCharPre",
+  })
+  use("farmergreg/vim-lastplace")
+  use("ellisonleao/gruvbox.nvim")
+  -- snippets
+  use({
+    "L3MON4D3/LuaSnip",
+    event = "InsertCharPre",
+  })
+  use({
+    "rafamadriz/friendly-snippets",
+    event = "InsertCharPre",
+  })
+
+
+  use({
+    "windwp/nvim-autopairs",
+    config = utils.require_plugin("autopairs")
+  })
+  use({
+    "numToStr/Comment.nvim",
+    config = utils.require_plugin("comment")
+  })
+  use({
+    "lukas-reineke/indent-blankline.nvim",
+    config = utils.require_plugin("indentline")
+  })
+  use({
+    "ur4ltz/surround.nvim",
+    config = utils.require_plugin("surround")
+  })
+  use({
+    "kyazdani42/nvim-tree.lua",
+    config = utils.require_plugin("nvimtree")
+  })
   use({
     "akinsho/bufferline.nvim",
     branch = "main",
+    config = utils.require_plugin("bufferline")
   })
-  use("moll/vim-bbye")
-  use("nvim-lualine/lualine.nvim")
-  use("arkav/lualine-lsp-progress")
+  use({
+    "nvim-lualine/lualine.nvim",
+    config = utils.require_plugin("lualine")
+  })
   use({
     "akinsho/toggleterm.nvim",
     branch = "main",
+    config = utils.require_plugin("toggleterm")
   })
-  --[[ use "ahmedkhalf/project.nvim" ]]
-  use("lewis6991/impatient.nvim")
-  use("lukas-reineke/indent-blankline.nvim")
-  use("goolord/alpha-nvim")
-  use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
-  use("folke/which-key.nvim")
-  use({ "schtibe/taxi.vim", ft = "taxi" })
-  use("max397574/better-escape.nvim")
-  use("farmergreg/vim-lastplace")
-  -- use("nathom/filetype.nvim")
-  -- Colorschemes
-  -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
-  use("ellisonleao/gruvbox.nvim")
+  use({
+    "goolord/alpha-nvim",
+    config = utils.require_plugin("alpha")
+  })
+  use({
+    "folke/which-key.nvim",
+    config = utils.require_plugin("whichkey")
+  })
 
   -- cmp plugins
-  use("hrsh7th/nvim-cmp") -- The completion plugin
-  use("hrsh7th/cmp-buffer") -- buffer completions
-  use("hrsh7th/cmp-path") -- path completions
-  use("hrsh7th/cmp-cmdline") -- cmdline completions
-  use("saadparwaiz1/cmp_luasnip") -- snippet completions
-  use("hrsh7th/cmp-nvim-lsp")
+  use({
+      "hrsh7th/nvim-cmp",
+      requires = {
+        { "hrsh7th/cmp-nvim-lsp" },
+        { "hrsh7th/cmp-nvim-lua" },
+        { "hrsh7th/cmp-buffer" },
+        { "hrsh7th/cmp-path" },
+        { "hrsh7th/cmp-cmdline" },
+      },
+      config = utils.require_plugin("cmp"),
+    })
 
-  -- snippets
-  use("L3MON4D3/LuaSnip") --snippet engine
-  use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
 
   -- LSP
   use("neovim/nvim-lspconfig") -- enable LSP
@@ -94,20 +131,31 @@ return packer.startup(function(use)
   use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
 
   -- Telescope
-  use("nvim-telescope/telescope.nvim")
+  use({
+    "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    config = utils.require_plugin("telescope")
+  })
   use("nvim-telescope/telescope-media-files.nvim")
   use("nvim-telescope/telescope-ui-select.nvim")
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-  use("stevearc/dressing.nvim")
+  use({
+    "stevearc/dressing.nvim",
+    config = utils.require_plugin("dressing")
+  })
   -- Treesitter
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
+    config = utils.require_plugin("treesitter")
   })
   use("JoosepAlviste/nvim-ts-context-commentstring")
 
   -- Git
-  use("lewis6991/gitsigns.nvim")
+  use({
+    "lewis6991/gitsigns.nvim",
+    config = utils.require_plugin("gitsigns")
+  })
   use({
     "tpope/vim-fugitive",
     cmd = {
