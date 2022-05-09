@@ -1,8 +1,8 @@
 local status_ok, surround = pcall(require, "surround")
 if not status_ok then
-	return
+  return
 end
 
 surround.setup({
-	mappings_style = "surround",
+  mappings_style = "surround",
 })

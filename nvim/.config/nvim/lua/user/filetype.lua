@@ -1,12 +1,12 @@
 local status_ok, filetype = pcall(require, "filetype")
 if not status_ok then
-	return
+  return
 end
 
 filetype.setup({
-	overrides = {
-		extensions = {
-			tks = "taxi",
-		},
-	},
+  overrides = {
+    extensions = {
+      tks = "taxi",
+    },
+  },
 })

@@ -195,4 +195,3 @@ local opts = {
 }
 
 return opts
-
