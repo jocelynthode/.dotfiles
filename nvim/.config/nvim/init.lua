@@ -18,4 +18,5 @@ for _, module in ipairs(core_modules) do
   end
 end
 
-vim.cmd [[colorscheme gruvbox]]
+-- vim.cmd [[colorscheme gruvbox]]
+vim.cmd [[colorscheme dracula]]

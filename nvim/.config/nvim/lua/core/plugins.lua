@@ -56,6 +56,8 @@ return packer.startup(function(use)
   })
   use("farmergreg/vim-lastplace")
   use("ellisonleao/gruvbox.nvim")
+  use("shaunsingh/nord.nvim")
+  use("Mofiqul/dracula.nvim")
   -- snippets
   use({
     "L3MON4D3/LuaSnip",
