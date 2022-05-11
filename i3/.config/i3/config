@@ -260,6 +260,8 @@ for_window [window_type="notification"] floating enable; border none
 for_window [title="Desktop — Plasma"] floating enable, border none, move scratchpad
 for_window [title="Desktop — Plasma"] kill; floating enable; border none
 no_focus [window_type="notification"]
+for_window [window_type="notification"] border none
+for_window [window_type="dialog"] border none
 
 for_window [class="Solaar"] floating enable; border none
 for_window [class="org.remmina.Remmina"] floating enable; border none
