@@ -54,7 +54,6 @@ return packer.startup(function(use)
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
   })
-  use("farmergreg/vim-lastplace")
   use("ellisonleao/gruvbox.nvim")
   use("shaunsingh/nord.nvim")
   use("Mofiqul/dracula.nvim")
@@ -68,7 +67,10 @@ return packer.startup(function(use)
     event = "InsertCharPre",
   })
 
-
+  use({
+    "ethanholz/nvim-lastplace",
+    config = function() require('nvim-lastplace').setup() end
+  })
   use({
     "windwp/nvim-autopairs",
     config = utils.require_plugin("autopairs")

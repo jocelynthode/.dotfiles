@@ -64,9 +64,9 @@ def _draw_left_status(
     screen.cursor.bg = 0
     if not is_last:
         screen.cursor.fg = (
-            as_rgb(color_as_int(Color(131, 182, 175)))
+            as_rgb(color_as_int(Color(98, 114, 164)))
             if tab.is_active
-            else as_rgb(color_as_int(Color(60, 71, 77)))
+            else as_rgb(color_as_int(Color(68, 71, 90)))
         )
         screen.draw(draw_data.sep)
     return end
