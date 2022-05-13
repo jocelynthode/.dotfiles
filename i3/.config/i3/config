@@ -16,15 +16,24 @@ set $alt Mod1
 # is used in the bar {} block below.
 font pango:monospace 5
 
-# Dracula theme
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+set $bg #282828
+set $red #cc241d
+set $green #98971a
+set $yellow #d79921
+set $blue #458588
+set $purple #b16286
+set $aqua #689d68
+set $gray #a89984
+set $darkgray #1d2021
+set $lightgray #bdae93
+set $orange #fe8019
+set $cyan #83a598
 
-client.background       #F8F8F52
+# class                 border|backgr|text|indicator|child_border
+client.focused          $cyan $cyan $cyan $cyan $cyan $cyan
+client.focused_inactive $darkgray $darkgray $lightgray $purple $darkgray
+client.unfocused        $darkgray $darkgray $lightgray $purple $darkgray
+client.urgent           $red $red $white $red $red
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -260,6 +269,6 @@ for_window [class="Last Epoch.x86_64"] floating enable; border none
 #smart_gaps on
 gaps inner 10
 gaps outer -3
-default_border pixel 3
+default_border pixel 2
 default_floating_border none
 

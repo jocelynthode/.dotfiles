@@ -2,4 +2,4 @@
 
 notify-send -i display "Display profile" "$AUTORANDR_CURRENT_PROFILE"
 
-feh --bg-fill /home/jocelyn/Pictures/space/wp4575300.jpg
+feh --bg-fill /home/jocelyn/Pictures/gruvbox/tropics.jpg

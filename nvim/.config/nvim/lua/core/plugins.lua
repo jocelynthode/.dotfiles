@@ -66,7 +66,12 @@ return packer.startup(function(use)
     "rafamadriz/friendly-snippets",
     event = "InsertCharPre",
   })
-
+  use({
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end
+  })
   use({
     "ethanholz/nvim-lastplace",
     config = function() require('nvim-lastplace').setup() end
