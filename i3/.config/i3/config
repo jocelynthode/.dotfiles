@@ -30,7 +30,7 @@ set $orange #fe8019
 set $cyan #83a598
 
 # class                 border|backgr|text|indicator|child_border
-client.focused          $cyan $cyan $cyan $cyan $cyan $cyan
+client.focused          $aqua $aqua $aqua $aqua $aqua $aqua
 client.focused_inactive $darkgray $darkgray $lightgray $purple $darkgray
 client.unfocused        $darkgray $darkgray $lightgray $purple $darkgray
 client.urgent           $red $red $white $red $red
