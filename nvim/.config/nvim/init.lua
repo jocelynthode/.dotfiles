@@ -18,5 +18,8 @@ for _, module in ipairs(core_modules) do
   end
 end
 
-vim.cmd [[colorscheme gruvbox]]
--- vim.cmd [[colorscheme dracula]]
+require('base16-colorscheme').with_config {
+  telescope = false,
+}
+vim.cmd [[colorscheme base16-gruvbox-dark-hard]]
+vim.cmd [[hi Normal ctermbg=NONE guibg=NONE]]

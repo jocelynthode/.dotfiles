@@ -55,8 +55,7 @@ return packer.startup(function(use)
     event = "InsertCharPre",
   })
   use("ellisonleao/gruvbox.nvim")
-  use("shaunsingh/nord.nvim")
-  use("Mofiqul/dracula.nvim")
+  use("RRethy/nvim-base16")
   -- snippets
   use({
     "L3MON4D3/LuaSnip",
