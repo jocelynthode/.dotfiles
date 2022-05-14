@@ -1,0 +1,24 @@
+[[item]]
+file= "~/.config/kitty/current-theme.conf"
+template = "kitty-te"
+rewrite = true
+hook = 'killall -s USR1 kitty'
+
+[[item]]
+file= "~/.config/i3/config"
+template = "i3"
+subtemplate = "colors"
+hook = 'i3-msg reload'
+
+[[item]]
+file= "~/.local/share/color-schemes/DummyBase24.colors"
+template = "kdeplasma"
+rewrite = true
+hook = 'plasma-apply-colorscheme DummyBase24'
+
+[[item]]
+file= "~/.local/share/color-schemes/Base24.colors"
+template = "kdeplasma"
+rewrite = true
+hook = 'plasma-apply-colorscheme Base24'
+
