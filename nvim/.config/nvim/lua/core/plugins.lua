@@ -56,15 +56,6 @@ return packer.startup(function(use)
   })
   use("ellisonleao/gruvbox.nvim")
   use("RRethy/nvim-base16")
-  -- snippets
-  use({
-    "L3MON4D3/LuaSnip",
-    event = "InsertCharPre",
-  })
-  use({
-    "rafamadriz/friendly-snippets",
-    event = "InsertCharPre",
-  })
   use({
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -127,6 +118,19 @@ return packer.startup(function(use)
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
+      {
+        "L3MON4D3/LuaSnip",
+        event = "BufReadPre",
+        requires = {
+          "rafamadriz/friendly-snippets",
+        },
+      },
+      {
+        "windwp/nvim-autopairs",
+        config = utils.require_plugin("autopairs"),
+        event = "BufReadPre",
+      },
+      {"saadparwaiz1/cmp_luasnip"},
     },
     config = utils.require_plugin("cmp"),
   })

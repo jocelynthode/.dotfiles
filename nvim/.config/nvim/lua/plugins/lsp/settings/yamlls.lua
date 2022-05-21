@@ -6,9 +6,6 @@ return {
       },
     },
     yaml = {
-      trace = {
-        server = "verbose"
-      },
       format = {
         enable = true,
         bracketSpacing = false,
