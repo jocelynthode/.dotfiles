@@ -130,7 +130,7 @@ return packer.startup(function(use)
         config = utils.require_plugin("autopairs"),
         event = "BufReadPre",
       },
-      {"saadparwaiz1/cmp_luasnip"},
+      { "saadparwaiz1/cmp_luasnip" },
     },
     config = utils.require_plugin("cmp"),
   })
