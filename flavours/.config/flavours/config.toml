@@ -22,3 +22,9 @@ template = "kdeplasma"
 rewrite = true
 hook = 'plasma-apply-colorscheme Base24'
 
+
+[[item]]
+file= "~/.config/spicetify/Themes/Base16/color.ini"
+template = "spicetify"
+rewrite = true
+hook = 'spicetify config current_theme Base16 && spicetify apply'
