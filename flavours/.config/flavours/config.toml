@@ -34,3 +34,9 @@ file= "~/.dotfiles/slack/theme.txt"
 template = "slack"
 rewrite = true
 hook = "cat ~/.dotfiles/slack/theme.txt"
+
+[[item]]
+file= "~/.config/fish/conf.d/fzf-theme.fish"
+template = "fzf"
+subtemplate = "fish"
+rewrite = true
