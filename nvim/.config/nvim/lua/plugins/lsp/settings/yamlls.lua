@@ -9,6 +9,7 @@ return {
       format = {
         enable = true,
         bracketSpacing = false,
+        singleQuote = true,
       },
       schemas = {
         kubernetes = "/*.yaml"

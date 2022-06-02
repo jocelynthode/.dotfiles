@@ -1,42 +1,46 @@
+schemes_url = "https://github.com/Base24/base24-schemes-source.git"
+templates_url = "https://github.com/jocelynthode/base24-templates-source.git"
+
+
 [[item]]
-file= "~/.config/kitty/current-theme.conf"
+file = "~/.config/kitty/current-theme.conf"
 template = "kitty-te"
 rewrite = true
 hook = 'killall -s USR1 kitty'
 
 [[item]]
-file= "~/.config/i3/config"
+file = "~/.config/i3/config"
 template = "i3"
 subtemplate = "colors"
 hook = 'i3-msg reload'
 
 [[item]]
-file= "~/.local/share/color-schemes/DummyBase24.colors"
+file = "~/.local/share/color-schemes/DummyBase24.colors"
 template = "kdeplasma"
 rewrite = true
 hook = 'plasma-apply-colorscheme DummyBase24'
 
 [[item]]
-file= "~/.local/share/color-schemes/Base24.colors"
+file = "~/.local/share/color-schemes/Base24.colors"
 template = "kdeplasma"
 rewrite = true
 hook = 'plasma-apply-colorscheme Base24'
 
 
 [[item]]
-file= "~/.config/spicetify/Themes/Base16/color.ini"
+file = "~/.config/spicetify/Themes/Base16/color.ini"
 template = "spicetify"
 rewrite = true
 hook = 'spicetify config current_theme Base16 && spicetify apply'
 
 [[item]]
-file= "~/.dotfiles/slack/theme.txt"
+file = "~/.dotfiles/slack/theme.txt"
 template = "slack"
 rewrite = true
 hook = "cat ~/.dotfiles/slack/theme.txt"
 
 [[item]]
-file= "~/.config/fish/conf.d/fzf-theme.fish"
+file = "~/.config/fish/conf.d/fzf-theme.fish"
 template = "fzf"
 subtemplate = "fish"
 rewrite = true
