@@ -16,7 +16,7 @@ if status is-interactive
   abbr -a t terraform
   abbr -a n nvim
   alias keti='kubectl exec -ti'
-  alias cat='bat --theme=gruvbox-dark'
+  alias cat='bat'
   alias find='fd'
   alias vi="nvim"
   alias vim="nvim"
