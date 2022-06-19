@@ -17,13 +17,8 @@
       url = "github:guibou/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    base16-schemes = {
-    	url = "github:Base24/base24-schemes-source";
-    	flake = false;
-    };
     nix-colors = {
     	url = "github:misterio77/nix-colors";
-    	inputs.base16-schemes.follows = "base16-schemes";
     };
   };
 

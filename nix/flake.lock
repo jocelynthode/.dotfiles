@@ -3,16 +3,16 @@
     "base16-schemes": {
       "flake": false,
       "locked": {
-        "lastModified": 1592597337,
-        "narHash": "sha256-ILF1zDIlocrsmfqN/BWXP5hsOC3NMlU33Uh733e3nTk=",
-        "owner": "Base24",
-        "repo": "base24-schemes-source",
-        "rev": "a28029dfd1bd61c5af46aa857e0ed2b83fe5f7a3",
+        "lastModified": 1655238460,
+        "narHash": "sha256-K8Qx8xNn2blm3qGZFNzXGX9DzXQalTTllJpILNPcuVM=",
+        "owner": "base16-project",
+        "repo": "base16-schemes",
+        "rev": "0a6b24b22f48c8a786feebc973f233238eaaaecb",
         "type": "github"
       },
       "original": {
-        "owner": "Base24",
-        "repo": "base24-schemes-source",
+        "owner": "base16-project",
+        "repo": "base16-schemes",
         "type": "github"
       }
     },
@@ -58,9 +58,7 @@
     },
     "nix-colors": {
       "inputs": {
-        "base16-schemes": [
-          "base16-schemes"
-        ]
+        "base16-schemes": "base16-schemes"
       },
       "locked": {
         "lastModified": 1655076867,
@@ -161,7 +159,6 @@
     },
     "root": {
       "inputs": {
-        "base16-schemes": "base16-schemes",
         "home-manager": "home-manager",
         "nix-colors": "nix-colors",
         "nixgl": "nixgl",

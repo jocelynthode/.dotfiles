@@ -6,9 +6,10 @@
 #   └─   └─ configuration.nix *
 #
 
-{ config, lib, pkgs, inputs, user, location, ... }:
+{ config, lib, pkgs, inputs, user, location, nix-colors, ... }:
 
 {
+
   boot = {                                      # Boot options
     kernelPackages = pkgs.linuxPackages_latest;
     
@@ -124,6 +125,9 @@
       windowManager.i3 = {
         enable = true;
         package = pkgs.i3-gaps;
+        extraPackages = with pkgs; [
+          dex
+        ];
       };
     };
   };
