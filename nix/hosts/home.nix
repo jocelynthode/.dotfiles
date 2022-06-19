@@ -76,6 +76,50 @@ in
           { command = "kill; floating enable"; criteria = { title = "Desktop - Plasma";};  }
         ];
       };
+      colors = {
+        focused = {
+          border = "#${config.colorScheme.colors.base05}";
+          background = "#${config.colorScheme.colors.base0D}";
+          text = "#${config.colorScheme.colors.base00}";
+          indicator= "#${config.colorScheme.colors.base0D}";
+          childBorder = "#${config.colorScheme.colors.base0C}";
+        };
+        focusedInactive = {
+          border = "#${config.colorScheme.colors.base01}";
+          background = "#${config.colorScheme.colors.base01}";
+          text = "#${config.colorScheme.colors.base05}";
+          indicator= "#${config.colorScheme.colors.base03}";
+          childBorder = "#${config.colorScheme.colors.base01}";
+        };
+        unfocused = {
+          border = "#${config.colorScheme.colors.base01}";
+          background = "#${config.colorScheme.colors.base00}";
+          text = "#${config.colorScheme.colors.base05}";
+          indicator= "#${config.colorScheme.colors.base01}";
+          childBorder = "#${config.colorScheme.colors.base01}";
+        };
+        urgent = {
+          border = "#${config.colorScheme.colors.base08}";
+          background = "#${config.colorScheme.colors.base08}";
+          text = "#${config.colorScheme.colors.base00}";
+          indicator= "#${config.colorScheme.colors.base08}";
+          childBorder = "#${config.colorScheme.colors.base08}";
+        };
+        placeholder = {
+          border = "#${config.colorScheme.colors.base00}";
+          background = "#${config.colorScheme.colors.base00}";
+          text = "#${config.colorScheme.colors.base05}";
+          indicator= "#${config.colorScheme.colors.base00}";
+          childBorder = "#${config.colorScheme.colors.base00}";
+        };
+        background = {
+          border = "#${config.colorScheme.colors.base07}";
+          background = "#${config.colorScheme.colors.base07}";
+          text = "#${config.colorScheme.colors.base07}";
+          indicator= "#${config.colorScheme.colors.base07}";
+          childBorder = "#${config.colorScheme.colors.base07}";
+        };
+      };
 
       floating = {
         border = 0;
