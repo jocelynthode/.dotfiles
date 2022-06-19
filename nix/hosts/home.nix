@@ -112,13 +112,7 @@ in
           indicator= "#${config.colorScheme.colors.base00}";
           childBorder = "#${config.colorScheme.colors.base00}";
         };
-        background = {
-          border = "#${config.colorScheme.colors.base07}";
-          background = "#${config.colorScheme.colors.base07}";
-          text = "#${config.colorScheme.colors.base07}";
-          indicator= "#${config.colorScheme.colors.base07}";
-          childBorder = "#${config.colorScheme.colors.base07}";
-        };
+        background = "#${config.colorScheme.colors.base07}";
       };
 
       floating = {
