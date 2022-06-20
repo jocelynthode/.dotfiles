@@ -86,7 +86,13 @@
       curl
       gcc
       fzf
+      libsForQt5.full
+      kmix
     ];
+  };
+
+  programs = {
+    dconf.enable = true;
   };
 
   services = {
@@ -100,7 +106,6 @@
       pulse.enable = true;
       jack.enable = true;
     };
-
     blueman.enable = true;                      # Bluetooth
     xserver = {                                 # In case, multi monitor support
       enable = true;

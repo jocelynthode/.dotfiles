@@ -18,7 +18,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-colors = {
-    	url = "github:misterio77/nix-colors";
+    	# url = "github:misterio77/nix-colors";
+    	url = "github:djacu/nix-colors/feature/add-conversion-functions";
     };
   };
 

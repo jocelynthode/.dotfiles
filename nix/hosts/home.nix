@@ -26,10 +26,10 @@ in
     packages = with pkgs; [
       # Terminal
       htop              # Resource Manager
-      bat
       fd
       ripgrep
       delta
+      libnotify
       
       # Video/Audio
       feh               # Image Viewer
@@ -44,10 +44,10 @@ in
       rsync             # Syncer $ rsync -r dir1/ dir2/
       unzip             # Zip files
 
-      autorandr
       flavours
       latte-dock
       spotify
+      signal-desktop
     ];
     stateVersion = "22.11";
   };
@@ -74,6 +74,7 @@ in
         border = 2;
         commands = [
           { command = "kill; floating enable"; criteria = { title = "Desktop - Plasma";};  }
+          { command = "kill; floating enable"; criteria = { class = "plasmashell"; title = "Desktop"; };  }
         ];
       };
       colors = {
@@ -218,7 +219,7 @@ in
         "${mod}+Shift+0" = "move container to workspace number 10; workspace 10";
         "${mod}+Shift+c" = "reload";
         "${mod}+Shift+r" = "restart";
-        "${mod}+Shift+e" = "exec --no-startup-id qdbus-qt5 org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1";
+        "${mod}+Shift+e" = "exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1";
         "${mod}+r" = "mode resize";
       };
       assigns = {
@@ -256,35 +257,39 @@ in
     };
   };
 
-  services.picom = {
-    enable = true;
-    vSync = true;
-    activeOpacity = "1.0";
-    inactiveOpacity = "1.0";
-    backend = "glx";
-    fade = false;
-    opacityRule = [ 
-      "100:fullscreen"
-      "85:class_g = 'Spotify'"
-    ];
-    
-    shadow = true;
-    shadowOpacity = "0.65";
-    shadowExclude = [
-      "name = 'Notification'"
-      "class_g = 'lattedock'"
-    ];
-    extraOptions = ''
-      blur-method = "dual_kawase"
-      blur-strength = 5
-      blur-kern = "3x3box";
-      mark-wmwin-focused = true;
-      mark-ovredir-focused = true;
-      detect-rounded-corners = true;
-      detect-client-opacity = true;
-    '';
+  services = {
+    easyeffects = {
+      enable = true;
+    };
+    picom = {
+      enable = true;
+      vSync = true;
+      activeOpacity = "1.0";
+      inactiveOpacity = "1.0";
+      backend = "glx";
+      fade = false;
+      opacityRule = [ 
+        "100:fullscreen"
+        "85:class_g = 'Spotify'"
+      ];
+      
+      shadow = true;
+      shadowOpacity = "0.65";
+      shadowExclude = [
+        "name = 'Notification'"
+        "class_g = 'lattedock'"
+      ];
+      extraOptions = ''
+        blur-method = "dual_kawase"
+        blur-strength = 5
+        blur-kern = "3x3box";
+        mark-wmwin-focused = true;
+        mark-ovredir-focused = true;
+        detect-rounded-corners = true;
+        detect-client-opacity = true;
+      '';
+    };
   };
-
 
 
   xdg.configFile."kitty/tab_bar.py" = {
@@ -423,9 +428,271 @@ in
     '';
   };
 
+  xdg.configFile."easyeffects/input/Guitar.json" = {
+    text = ''
+      {
+        "input": {
+            "blocklist": [],
+            "plugins_order": []
+        }
+      }
+    '';
+  };
+
+  xdg.configFile."easyeffects/input/ImprovedMic.json" = {
+    text = ''
+      {
+        "input": {
+            "blocklist": [
+                "Guitar Monitor"
+            ],
+            "gate": {
+                "attack": 5.0,
+                "detection": "RMS",
+                "input-gain": 0.0,
+                "knee": 9.0,
+                "makeup": 0.0,
+                "output-gain": 0.0,
+                "range": -12.0,
+                "ratio": 2.0,
+                "release": 100.0,
+                "stereo-link": "Average",
+                "threshold": -18.0
+            },
+            "plugins_order": [
+                "gate",
+                "rnnoise"
+            ],
+            "rnnoise": {
+                "input-gain": 0.0,
+                "model-path": "",
+                "output-gain": 0.0
+            }
+        }
+      }
+    '';
+  };
+
+  xdg.configFile."easyeffects/autoload/input/alsa_input.usb-Samson_Technologies_Samson_Meteor_Mic-00.analog-stereo:analog-input-mic.json" = {
+    text = ''
+      {
+        "device": "alsa_input.usb-Samson_Technologies_Samson_Meteor_Mic-00.analog-stereo",
+        "device-description": "Meteor condenser microphone Analog Stereo",
+        "device-profile": "analog-input-mic",
+        "preset-name": "ImprovedMic"
+      }
+    '';
+  };
+
+  xdg.configFile."easyeffects/autoload/input/alsa_input.usb-Hercules_Rocksmith_USB_Guitar_Adapter-00.mono-fallback:analog-input-mic.json" = {
+    text = ''
+      {
+        "device": "alsa_input.usb-Hercules_Rocksmith_USB_Guitar_Adapter-00.mono-fallback",
+        "device-description": "Rocksmith Guitar Adapter Mono",
+        "device-profile": "analog-input-mic",
+        "preset-name": "Guitar"
+      }
+    '';
+  };
+
+  xdg.dataFile."color-schemes/Base16.colors" = {
+    text = ''
+      [ColorEffects:Disabled]
+      Color=56,56,56
+      ColorAmount=0
+      ColorEffect=0
+      ContrastAmount=0.65000000000000002
+      ContrastEffect=1
+      IntensityAmount=0.10000000000000001
+      IntensityEffect=2
+
+      [ColorEffects:Inactive]
+      ChangeSelectionColor=true
+      Color=112,111,110
+      ColorAmount=0.025000000000000001
+      ColorEffect=2
+      ContrastAmount=0.10000000000000001
+      ContrastEffect=2
+      Enable=false
+      IntensityAmount=0
+      IntensityEffect=0
+
+
+      [Colors:Button]
+      ${nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      BackgroundAlternate={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
+      BackgroundNormal={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
+      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
+      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
+      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
+      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
+      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
+      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+
+      [Colors:Selection]
+      BackgroundAlternate={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      BackgroundNormal={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
+      ForegroundInactive={{base01-rgb-r}},{{base01-rgb-g}},{{base01-rgb-b}}
+      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
+      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
+      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundNormal={{base01-rgb-r}},{{base01-rgb-g}},{{base01-rgb-b}}
+      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
+      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+
+      [Colors:Tooltip]
+      BackgroundAlternate={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
+      BackgroundNormal={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
+      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
+      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
+      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
+      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
+      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
+      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+
+      [Colors:View]
+      BackgroundAlternate={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
+      BackgroundNormal={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
+      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
+      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
+      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
+      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
+      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
+      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+
+      [Colors:Window]
+      BackgroundAlternate={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
+      BackgroundNormal={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
+      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
+      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
+      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
+      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
+      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
+      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
+      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+
+      [General]
+      ColorScheme={{scheme-name}}
+      Name={{scheme-name}}
+      shadeSortColumn=true
+
+      [KDE]
+      contrast=4
+
+      [WM]
+      activeBackground={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
+      activeBlend={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
+      activeForeground={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
+      inactiveBackground={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
+      inactiveBlend={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
+      inactiveForeground={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+    '';
+  };
+
   programs = {
     home-manager.enable = true;
     fzf.enable = true;
+    bat = {
+      enable = true;
+      config = {
+        theme = "gruvbox-dark"; 
+      };
+    };
+    git = {
+      enable = true;
+      userName = "Jocelyn Thode";
+      userEmail = "jocelyn.thode@gmail.com";
+      extraConfig = {
+        pull = {
+          rebase = true;
+        };
+        diff = {
+          colorMoved = "default";
+        };
+        merge = {
+          conflictstyle = "diff3";
+        };
+        delta = {
+          navigate = true;
+          line-numbers = true;
+          side-by-side = true;
+        };
+        core = {
+          pager = "delta";
+        };
+        submodule = {
+          recurse = true;
+        };
+        interactive = {
+          diffFilter = "delta --color-only";
+        };
+      };
+    };
+    htop = {
+      enable = true;
+      settings = {
+        color_scheme = 6;
+        cpu_count_from_one = 0;
+        delay = 15;
+        fields = with config.lib.htop.fields; [
+          PID
+          USER
+          PRIORITY
+          NICE
+          M_SIZE
+          M_RESIDENT
+          M_SHARE
+          STATE
+          PERCENT_CPU
+          PERCENT_MEM
+          TIME
+          COMM
+        ];
+        highlight_base_name = 1;
+        highlight_megabytes = 1;
+        highlight_threads = 1;
+        tree_view = 0;
+      } // (with config.lib.htop; leftMeters [
+        (bar "LeftCPUs2")
+        (bar "CPU")
+        (bar "Battery")
+        (text "Blank")
+        (text "Blank")
+        (text "Blank")
+        (graph "Memory")
+        (text "NetworkIO")
+        (text "DiskIO")
+      ]) // (with config.lib.htop; rightMeters [
+        (bar "RightCPUs2")
+        (bar "Memory")
+        (bar "Swap")
+        (text "Blank")
+        (text "Blank")
+        (text "Blank")
+        (graph "LoadAverage")
+        (text "Uptime")
+        (text "Systemd")
+      ]);
+    };
+
     kitty = {
       enable = true;
       font.name = "JetBrainsMono Nerd Font Mono";
@@ -486,6 +753,43 @@ in
       ];
 
     };
+    autorandr = {
+      enable = true;
+      hooks = {
+        postswitch = {
+          "notify-change" = "${pkgs.libnotify}/bin/notify-send -i display 'Display profile' \"$AUTORANDR_CURRENT_PROFILE\"";
+          "change-background" = "${pkgs.feh}/bin/feh --bg-fill /home/jocelyn/Pictures/gruvbox/tropics.jpg";
+        };
+      };
+      profiles = {
+        "desktop" = {
+          fingerprint = {
+            DP-2 = "00ffffffffffff001e6d7f5bbb300800091d0104b53c22789f8cb5af4f43ab260e5054254b007140818081c0a9c0b300d1c08100d1cf28de0050a0a038500830080455502100001a000000fd003090e6e63c010a202020202020000000fc003237474c3835300a2020202020000000ff003930394e54435a46533736330a01ee02031a7123090607e305c000e606050160592846100403011f13565e00a0a0a029503020350055502100001a909b0050a0a046500820880c555021000000b8bc0050a0a055500838f80c55502100001a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a";
+            HDMI-0 = "00ffffffffffff0009d1327f455400001018010380351e782e9de1a654549f260d5054a56b80d1c0317c4568457c6168617c953c3168023a801871382d40582c4500132a2100001e000000ff004a34453034383136534c300a20000000fd0018780f8711000a202020202020000000fc0042656e5120584c323431315a0a0171020323f15090050403020111121314060715161f202309070765030c00100083010000023a801871382d40582c4500132a2100001f011d8018711c1620582c2500132a2100009f011d007251d01e206e285500132a2100001f8c0ad08a20e02d10103e9600132a210000190000000000000000000000000000000000000000c7";
+          };
+          config = {
+            DP-2 = {
+              enable = true;
+              crtc = 0;
+              primary = true;
+              position = "1920x0";
+              mode = "2560x1440";
+              gamma = "1.075:1.0:0.909";
+              rate = "144.00";
+            };
+            HDMI-0 = {
+              enable = true;
+              crtc = 1;
+              primary = false;
+              position = "0x0";
+              mode = "1920x1080";
+              gamma = "1.075:1.0:0.909";
+              rate = "60.00";
+            };
+          };
+        };
+      };
+    };     
     fish = {
       enable = true;
       shellAliases = {
