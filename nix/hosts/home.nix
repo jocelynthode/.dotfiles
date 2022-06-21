@@ -45,7 +45,6 @@ in
       unzip             # Zip files
 
       flavours
-      latte-dock
       spotify
       signal-desktop
     ];
@@ -56,7 +55,7 @@ in
     enable = true;
     config = {
       modifier = mod;
-      bars = [ ]; # use latte instead
+      bars = [ ]; # use kde panels instead
       workspaceOutputAssign = [
         { workspace = "1"; output = "DP4 eDP1 DP-2"; }
         { workspace = "2"; output = "DP4 eDP1 DP-2"; }
@@ -519,91 +518,90 @@ in
 
 
       [Colors:Button]
-      ${nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      BackgroundAlternate={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
-      BackgroundNormal={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
-      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
-      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
-      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
-      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
-      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
-      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
+      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
+      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
+      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
+      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
+      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
 
       [Colors:Selection]
-      BackgroundAlternate={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      BackgroundNormal={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
-      ForegroundInactive={{base01-rgb-r}},{{base01-rgb-g}},{{base01-rgb-b}}
-      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
-      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
-      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundNormal={{base01-rgb-r}},{{base01-rgb-g}},{{base01-rgb-b}}
-      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
-      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
+      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
+      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
+      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
+      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
+      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
+      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
 
       [Colors:Tooltip]
-      BackgroundAlternate={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
-      BackgroundNormal={{base00-rgb-r}},{{base00-rgb-g}},{{base00-rgb-b}}
-      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
-      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
-      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
-      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
-      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
-      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
+      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
+      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
+      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
+      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
+      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
 
       [Colors:View]
-      BackgroundAlternate={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
-      BackgroundNormal={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
-      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
-      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
-      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
-      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
-      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
-      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
+      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
+      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
+      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
+      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
+      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
 
       [Colors:Window]
-      BackgroundAlternate={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
-      BackgroundNormal={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
-      DecorationFocus={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      DecorationHover={{base08-rgb-r}},{{base08-rgb-g}},{{base08-rgb-b}}
-      ForegroundActive={{base0B-rgb-r}},{{base0B-rgb-g}},{{base0B-rgb-b}}
-      ForegroundInactive={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundLink={{base0D-rgb-r}},{{base0D-rgb-g}},{{base0D-rgb-b}}
-      ForegroundNegative={{base0F-rgb-r}},{{base0F-rgb-g}},{{base0F-rgb-b}}
-      ForegroundNeutral={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
-      ForegroundNormal={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
-      ForegroundPositive={{base0C-rgb-r}},{{base0C-rgb-g}},{{base0C-rgb-b}}
-      ForegroundVisited={{base0E-rgb-r}},{{base0E-rgb-g}},{{base0E-rgb-b}}
+      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
+      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
+      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
+      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
+      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
+      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
+      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
 
       [General]
-      ColorScheme={{scheme-name}}
-      Name={{scheme-name}}
+      ColorScheme=${config.colorScheme.name}
+      Name=${config.colorScheme.author}
       shadeSortColumn=true
 
       [KDE]
       contrast=4
 
       [WM]
-      activeBackground={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
-      activeBlend={{base10-rgb-r}},{{base10-rgb-g}},{{base10-rgb-b}}
-      activeForeground={{base06-rgb-r}},{{base06-rgb-g}},{{base06-rgb-b}}
-      inactiveBackground={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
-      inactiveBlend={{base11-rgb-r}},{{base11-rgb-g}},{{base11-rgb-b}}
-      inactiveForeground={{base05-rgb-r}},{{base05-rgb-g}},{{base05-rgb-b}}
+      activeBackground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      activeBlend=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      activeForeground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
+      inactiveBackground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
+      inactiveBlend=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
+      inactiveForeground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
     '';
   };
 
