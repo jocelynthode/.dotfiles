@@ -7,8 +7,12 @@
 #
 
 { config, lib, pkgs, inputs, user, location, nix-colors, ... }:
-
-{
+let
+  feathers = import ./feathers/default.nix {
+    inherit lib;
+    fetchurl = pkgs.fetchurl;
+  };
+in {
 
   boot = {                                      # Boot options
     kernelPackages = pkgs.linuxPackages_latest;
@@ -25,6 +29,10 @@
       timeout = 5;                              # Grub auto select time
     };
   };
+
+  # See https://github.com/NixOS/nixpkgs/commit/15d761a525a025de0680b62e8ab79a9d183f313d 
+  systemd.targets.network-online.wantedBy = pkgs.lib.mkForce []; # Normally ["multi-user.target"]
+  systemd.services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce []; # Normally ["network-online.target"]
 
   users.users.${user} = {                   # System User
     isNormalUser = true;
@@ -58,19 +66,26 @@
     };
   };
 
-  fonts.fonts = with pkgs; [                # Fonts
-    carlito                                 # NixOS
-    vegur                                   # NixOS
-    jetbrains-mono
-    noto-fonts
-    font-awesome                            # Icons
-    corefonts                               # MS
-    (nerdfonts.override {                   # Nerdfont Icons override
-      fonts = [
-        "JetBrainsMono"
-      ];
-    })
-  ];
+  fonts = {
+    fontconfig.enable = true;
+    fontDir.enable = true;
+    fonts = with pkgs; [                # Fonts
+      carlito                                 # NixOS
+      vegur                                   # NixOS
+      jetbrains-mono
+      noto-fonts
+      font-awesome                            # Icons
+      corefonts                               # MS
+      material-design-icons
+      material-icons
+      feathers
+      (nerdfonts.override {                   # Nerdfont Icons override
+        fonts = [
+          "JetBrainsMono"
+        ];
+      })
+    ];
+  };
 
   environment = {
     variables = {
@@ -98,10 +113,10 @@
   programs = {
     dconf.enable = true;
     steam.enable = true;
+    nm-applet.enable = true;
   };
 
   services = {
-    sshd.enable = true;
     pipewire = {                            # Sound
       enable = true;
       alsa = {
@@ -109,26 +124,21 @@
         support32Bit = true;
       };
       pulse.enable = true;
-      jack.enable = true;
     };
     xserver = {                                 # In case, multi monitor support
       enable = true;
       layout = "us";
       xkbVariant = "altgr-intl";
       displayManager = {
-          sddm.enable = true;
-          defaultSession = "plasma+i3";
-          session = [
-              {
-                  manage = "desktop";
-                  name = "plasma+i3";
-                  start = ''exec env KDEWM=${pkgs.i3-gaps}/bin/i3 ${pkgs.plasma-workspace}/bin/startplasma-x11'';
-              }
-          ];
+          defaultSession = "none+i3";
+          lightdm.enable = true;
+          setupCommands = ''
+           ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-0 --off
+           ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --primary --mode 2560x1440 --pos 1920x0 --right-of HDMI-0 
+          '';
       };
       desktopManager = {
         xterm.enable = false;
-        plasma5.enable = true;
       };
      
       windowManager.i3 = {

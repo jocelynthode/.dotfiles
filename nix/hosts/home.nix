@@ -22,6 +22,12 @@ in
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
+    pointerCursor = {
+      package = pkgs.gnome.adwaita-icon-theme;
+      name = "Adwaita-dark";
+      x11.enable = true;
+    };
+
 
     packages = with pkgs; [
       # Terminal
@@ -30,6 +36,7 @@ in
       ripgrep
       delta
       libnotify
+      xsel
       
       # Video/Audio
       feh               # Image Viewer
@@ -47,8 +54,17 @@ in
       flavours
       spotify
       signal-desktop
+      pavucontrol
+      betterlockscreen
+      networkmanager_dmenu
+      rofi-power-menu
     ];
     stateVersion = "22.11";
+  };
+
+  # Fix polybar not starting up
+  systemd.user.services.polybar = {
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   xsession.windowManager.i3 = {
@@ -160,10 +176,6 @@ in
       { command = "${pkgs.dex}/bin/dex --autostart --environment i3"; notification = false; }
       ];
       keybindings = {
-        "XF86AudioRaiseVolume" = "exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut \"increase_volume\"";
-        "XF86AudioLowerVolume" = "exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut \"decrease_volume\"";
-        "XF86AudioMute" = "exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut \"mute\"";
-        "XF86AudioMicMute" = "exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut \"mic_mute\"";
         "${mod}+Return" = "exec kitty";
         "${mod}+Shift+q" = "kill";
         "${mod}+x" = "[urgent=latest] focus";
@@ -193,6 +205,7 @@ in
         "${mod}+s" = "layout stacking";
         "${mod}+w" = "layout tabbed";
         "${mod}+e" = "layout toggle split";
+        "${mod}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show drun -modi drun -theme launcher";
         "${mod}+Shift+space" = "floating toggle";
         "${mod}+space" = "focus mode_toggle";
         "${mod}+a" = "focus parent";
@@ -218,7 +231,7 @@ in
         "${mod}+Shift+0" = "move container to workspace number 10; workspace 10";
         "${mod}+Shift+c" = "reload";
         "${mod}+Shift+r" = "restart";
-        "${mod}+Shift+e" = "exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1";
+        "${mod}+Shift+e" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show menu -modi \"menu:rofi-power-menu\" -theme powermenu";
         "${mod}+r" = "mode resize";
       };
       assigns = {
@@ -256,12 +269,323 @@ in
     };
   };
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome3.adwaita-icon-theme;
+    };
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome3.adwaita-icon-theme;
+    };
+    cursorTheme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome3.adwaita-icon-theme;
+    };
+  };
+
   services = {
+    screen-locker = {
+      enable = true;
+      inactiveInterval = 30;
+      lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l dim";
+      xautolock.extraOptions = [
+        "Xautolock.killer: systemctl suspend"
+      ];
+    };
+    dunst = {
+      enable = true;
+      iconTheme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome3.adwaita-icon-theme;
+        size = "16x16";
+      };
+      settings = {
+        global = {
+          monitor = 0;
+          geometry = "0x0-50+65";
+          shrink = "yes";
+          transparency = 10;
+          padding = 16;
+          horizontal_padding = 16;
+          font = "JetBrainsMono Nerd Font 10";
+          line_height = 4;
+          format = ''<b>%s</b>\n%b'';
+        };
+      };
+    };
+    polybar = {
+      enable = true;
+      package = pkgs.polybar.override {
+        i3GapsSupport = true;
+        pulseSupport = true;
+      };
+      settings = {
+            colors = {
+              base00 = "#${config.colorScheme.colors.base00}";
+              base01 = "#${config.colorScheme.colors.base01}";
+              base02 = "#${config.colorScheme.colors.base02}";
+              base03 = "#${config.colorScheme.colors.base03}";
+              base04 = "#${config.colorScheme.colors.base04}";
+              base05 = "#${config.colorScheme.colors.base05}";
+              base06 = "#${config.colorScheme.colors.base06}";
+              base07 = "#${config.colorScheme.colors.base07}";
+              base08 = "#${config.colorScheme.colors.base08}";
+              base09 = "#${config.colorScheme.colors.base09}";
+              base0A = "#${config.colorScheme.colors.base0A}";
+              base0B = "#${config.colorScheme.colors.base0B}";
+              base0C = "#${config.colorScheme.colors.base0C}";
+              base0D = "#${config.colorScheme.colors.base0D}";
+              base0E = "#${config.colorScheme.colors.base0E}";
+              base0F = "#${config.colorScheme.colors.base0F}";
+
+              transparent-base00 = "#CC${config.colorScheme.colors.base00}";
+            };
+
+            bar = {
+              fill = "⏽";
+              empty = "⏽";
+              indicator = "";
+            };
+
+            "bar/main" = {
+              width = "100%";
+              height = "24pt";
+              radius = 0;
+              background = ''''${colors.transparent-base00}'';
+              foreground = ''''${colors.base07}'';
+              padding = 2;
+              line = {
+                size = 3;
+                color = ''''${colors.base00}'';
+              };
+              border.bottom = {
+                size = 0;
+                color = ''''${colors.base07}'';
+              };
+
+              module.margin = {
+                left = 1;
+                right = 1;
+              };  
+
+              modules = {
+                left = "xworkspaces sep cpu memory fs";
+                center = "date";
+                right = "battery eth sep volume brightness";
+              };
+              separator = "";
+              dim-value = "1.0";
+              tray-position = "none";
+              font = ["JetBrainsMono Nerd Font:size=11;4" "feather:size=12;3"];
+              enable-ipc = true;
+            };
+
+            settings = {
+              screenchange.reload = false;
+              compositing = {
+                background = "source";
+                foreground = "over";
+                overline = "over";
+                underline = "over";
+                border = "over";
+              };
+              pseudo-transparency=false;
+            };
+
+            "module/date" = {
+              type = "internal/date";
+              internal = 5;
+              date = {
+                text = "%H:%M:%S";
+                alt = "%Y-%m-%d %H:%M:%S";
+              };
+              label = "%date%";
+              format = {
+                text = "<label>";
+                prefix = {
+                  text = " ";
+                  foreground = ''''${colors.base0E}'';
+                };
+              };
+            };
+
+            "module/xworkspaces" = {
+              type = "internal/xworkspaces";
+
+              label = {
+                active = {
+                  text = "%name%";
+                  background = ''''${colors.base01}'';
+                  underline = ''''${colors.base0B}'';
+                  padding = 1;
+                };
+                occupied = {
+                  text = "%name%";
+                  padding = 1;
+                };
+                urgent = {
+                  text = "%name%";
+                  background = ''''${colors.base00}''; 
+                  underline = ''''${colors.base08}'';
+                  padding = 1;
+                };
+                empty = {
+                  text = "%name%";
+                  padding = 1;
+                };
+              };
+            };
+            
+            "module/volume" = {
+              type = "internal/pulseaudio";
+              interval = 5; 
+              format = {
+                volume = "<ramp-volume> <bar-volume>";
+                muted = {
+                  text = "<label-muted>";
+                  prefix = {
+                    text = "";
+                    foreground = ''''${colors.base08}'';
+                  };
+                };
+              };
+
+              label = {
+                volume = "%percentage%%";
+                muted = {
+                    text = " Muted";
+                    foreground = ''''${colors.base01}'';
+                  };
+              };
+
+              ramp = {
+                volume = {
+                  text = ["" "" ""];
+                  foreground = ''''${colors.base0D}'';
+                };
+                headphones = [""];
+              };
+              
+              bar.volume = {
+                  format = "%fill%%indicator%%empty%";
+                  width = 11;
+                  gradient = false;
+                  foreground = [''''${colors.base0B}'' ''''${colors.base0B}'' ''''${colors.base09}'' ''''${colors.base09}'' ''''${colors.base08}''];
+
+                  indicator = {
+                    text = ''''${bar.indicator}'';
+                    foreground = ''''${colors.base07}'';
+                    font = 2;
+                  };
+
+                  fill = {
+                    text = ''''${bar.fill}'';
+                    font = 2;
+                  };
+
+                  empty = {
+                    text = ''''${bar.empty}'';
+                    font = 2;
+                    foreground = ''''${colors.base01}'';
+                  };
+              };
+            };
+
+            "module/fs" = {
+              type = "internal/fs";
+              interval = 30;
+              mount = ["/"];
+              fixed.values = true;
+
+              format = {
+                mounted = {
+                  text = "<label-mounted>";
+                  prefix = {
+                    text = "";
+                    foreground = ''''${colors.base0C}'';
+                  };
+                };
+
+                unmounted = {
+                  text = "<label-unmounted>";
+                  prefix = {
+                    text = "";
+                    foreground = ''''${colors.base08}'';
+                  };
+                };
+              };
+              label = {
+                mounted = " %free%";
+                unmounted = " %mountpoint%: NA";
+              };
+            };
+
+            "module/memory" = {
+              type = "internal/memory";
+              interval = 5;
+              format = {
+                text = "<label>";
+                prefix = {
+                  text = ""; 
+                  foreground = ''''${colors.base0D}'';
+                };
+              };
+              label = "%percentage_used:2%%";
+            };
+
+            "module/cpu" = {
+              type = "internal/cpu";
+              interval = 1;
+
+              format = {
+                text = "<label>";
+                prefix = {
+                  text = ""; 
+                  foreground = ''''${colors.base0A}'';
+                };
+              };
+
+              label = " %percentage%%";
+            };
+
+            "network-base" = {
+              type = "internal/network";
+              interval = 5;
+              format = {
+                connected = "<label-connected> Connected";
+                disconnected = "<label-disconnected>";
+              };
+            };
+
+            "module/eth" = {
+              "inherit" = "network-base";
+              interface.type = "wired";
+              label.connected = {
+                text = "";
+                foreground = ''''${colors.base0B}''; 
+              };
+            };
+
+            "module/sep" = {
+              type = "custom/text";
+              content = {
+                text = "|";
+                foreground = ''''${colors.base03}'';
+              };
+            };
+            
+          };
+      script = "polybar main &";
+    };
     easyeffects = {
       enable = true;
     };
     picom = {
       enable = true;
+      experimentalBackends = true;
+      blur = true;
       vSync = true;
       activeOpacity = "1.0";
       inactiveOpacity = "1.0";
@@ -269,7 +593,9 @@ in
       fade = false;
       opacityRule = [ 
         "100:fullscreen"
+        "100:name *= 'i3lock'"
         "85:class_g = 'Spotify'"
+        "85:class_g *?= 'Rofi'"
       ];
       
       shadow = true;
@@ -279,8 +605,8 @@ in
         "class_g = 'lattedock'"
       ];
       extraOptions = ''
-        blur-method = "dual_kawase"
-        blur-strength = 5
+        blur-method = "dual_kawase";
+        blur-strength = 5;
         blur-kern = "3x3box";
         mark-wmwin-focused = true;
         mark-ovredir-focused = true;
@@ -494,120 +820,42 @@ in
     '';
   };
 
-  xdg.dataFile."color-schemes/Base16.colors" = {
+
+  xdg.configFile."networkmanager-dmenu/config.ini" = {
     text = ''
-      [ColorEffects:Disabled]
-      Color=56,56,56
-      ColorAmount=0
-      ColorEffect=0
-      ContrastAmount=0.65000000000000002
-      ContrastEffect=1
-      IntensityAmount=0.10000000000000001
-      IntensityEffect=2
-
-      [ColorEffects:Inactive]
-      ChangeSelectionColor=true
-      Color=112,111,110
-      ColorAmount=0.025000000000000001
-      ColorEffect=2
-      ContrastAmount=0.10000000000000001
-      ContrastEffect=2
-      Enable=false
-      IntensityAmount=0
-      IntensityEffect=0
-
-
-      [Colors:Button]
-      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
-      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
-      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
-      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
-      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
-      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
-
-      [Colors:Selection]
-      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
-      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
-      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
-      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
-      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
-      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
-      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
-
-      [Colors:Tooltip]
-      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
-      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
-      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
-      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
-      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
-      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
-
-      [Colors:View]
-      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
-      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
-      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
-      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
-      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
-      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
-
-      [Colors:Window]
-      BackgroundAlternate=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      BackgroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      DecorationFocus=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      DecorationHover=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base08}
-      ForegroundActive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0B}
-      ForegroundInactive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundLink=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0D}
-      ForegroundNegative=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0F}
-      ForegroundNeutral=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
-      ForegroundNormal=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
-      ForegroundPositive=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0C}
-      ForegroundVisited=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base0E}
-
-      [General]
-      ColorScheme=${config.colorScheme.name}
-      Name=${config.colorScheme.author}
-      shadeSortColumn=true
-
-      [KDE]
-      contrast=4
-
-      [WM]
-      activeBackground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      activeBlend=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      activeForeground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base06}
-      inactiveBackground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base00}
-      inactiveBlend=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base01}
-      inactiveForeground=${nix-colors.lib-core.conversions.hexToRGBString "," config.colorScheme.colors.base05}
+      [dmenu]
+      dmenu_command = rofi -dmenu -i -theme ~/.config/rofi/networkmenu.rasi
+      rofi_highlight = True
+      list_saved = True
     '';
   };
+
+  xdg.configFile."rofi/colors.rasi" = {
+    text = ''
+      * {
+        al:   #00000000;
+        bg:   #${config.colorScheme.colors.base00}aa;
+        bga:  #${config.colorScheme.colors.base01}aa;
+        fg:   #${config.colorScheme.colors.base07}ff;
+        ac:   #${config.colorScheme.colors.base08}ff;
+        se:   #${config.colorScheme.colors.base0C}ff;
+      }
+    '';
+  };
+
+  xdg.configFile."rofi/launcher.rasi".source = ./rofi/themes/launcher.rasi;
+  xdg.configFile."rofi/networkmenu.rasi".source = ./rofi/themes/networkmenu.rasi;
+  xdg.configFile."rofi/powermenu.rasi".source = ./rofi/themes/powermenu.rasi;
 
   programs = {
     home-manager.enable = true;
     fzf.enable = true;
+    rofi = {
+      enable = true;
+      font = "JetBrainsMono Nerd Font 12";
+      terminal = "${pkgs.kitty}/bin/kitty";
+      location = "center";
+    };
     bat = {
       enable = true;
       config = {
