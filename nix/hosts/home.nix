@@ -10,6 +10,16 @@
 let
   mod = "Mod4";
   alt = "Mod1";
+  bluetooth = import ./polybar/scripts/bluetooth.nix {
+    inherit pkgs config;
+  };
+  toggle-bluetooth = import ./polybar/scripts/toggle_bluetooth.nix {
+    inherit pkgs;
+  };
+
+  mic= import ./polybar/scripts/mic.nix {
+    inherit pkgs config;
+  };
 in
 { 
 
@@ -58,6 +68,13 @@ in
       betterlockscreen
       networkmanager_dmenu
       rofi-power-menu
+      rofi-pulse-select
+      rofi-rbw
+      networkmanagerapplet
+      bluetooth
+      toggle-bluetooth
+      mic
+      ponymix
     ];
     stateVersion = "22.11";
   };
@@ -87,10 +104,6 @@ in
       window = {
         titlebar = false;
         border = 2;
-        commands = [
-          { command = "kill; floating enable"; criteria = { title = "Desktop - Plasma";};  }
-          { command = "kill; floating enable"; criteria = { class = "plasmashell"; title = "Desktop"; };  }
-        ];
       };
       colors = {
         focused = {
@@ -140,20 +153,11 @@ in
           { window_type = "dialog"; }
           { class = "easyeffects"; }
           { class = "ProtonUp-Qt"; }
-          { class = "yakuake"; }
-          { class = "systemsettings"; }
-          { class = "plasmashell"; }
-          { class = "plasma"; }
-          { class = "plasma-desktop"; }
-          { class = "win7"; }
-          { class = "krunner"; }
-          { class = "Kmix"; }
-          { class = "Klipper"; }
-          { class = "Plasmoidviewer"; }
           { class = "mullvad vpn"; }
-          { class = "plasmawindowed"; }
           { class = "Solaar"; }
           { class = "org.remmina.Remmina"; }
+          { class = "Nm-connection-editor"; }
+          { class = "Pavucontrol"; }
         ];
       };
 
@@ -236,19 +240,19 @@ in
       };
       assigns = {
         "2" = [
-          { class = "firefoxdeveloperedition"; }
+          { class = "Firefoxdeveloperedition"; }
         ];
         "3" = [
-          { class = "kalendar"; }
-          { class = "kmail"; }
+          { class = "Falendar"; }
+          { class = "Kmail"; }
         ];
         "4" = [
-          { class = "steam"; }
+          { class = "Steam"; }
         ];
         "7" = [
           { class = "Signal"; }
           { class = "Slack"; }
-          { class = "discord"; }
+          { class = "Discord"; }
           { class = "Mumble"; }
         ];
         "9" = [
@@ -288,7 +292,7 @@ in
   services = {
     screen-locker = {
       enable = true;
-      inactiveInterval = 30;
+      inactiveInterval = 15;
       lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l dim";
       xautolock.extraOptions = [
         "Xautolock.killer: systemctl suspend"
@@ -373,7 +377,7 @@ in
               modules = {
                 left = "xworkspaces sep cpu memory fs";
                 center = "date";
-                right = "battery eth sep volume brightness";
+                right = "battery eth wifi bluetooth sep mic volume brightness";
               };
               separator = "";
               dim-value = "1.0";
@@ -456,7 +460,7 @@ in
                 volume = "%percentage%%";
                 muted = {
                     text = " Muted";
-                    foreground = ''''${colors.base01}'';
+                    foreground = ''''${colors.base03}'';
                   };
               };
 
@@ -552,20 +556,45 @@ in
 
             "network-base" = {
               type = "internal/network";
-              interval = 5;
+              interval = 2;
               format = {
-                connected = "<label-connected> Connected";
+                connected = "<label-connected>";
                 disconnected = "<label-disconnected>";
               };
+              label.disconnected = "";
             };
 
             "module/eth" = {
               "inherit" = "network-base";
               interface.type = "wired";
               label.connected = {
-                text = "";
+                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
                 foreground = ''''${colors.base0B}''; 
               };
+              label.disconnected = {
+                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{A}";
+                foreground = ''''${colors.base03}''; 
+              };
+            };
+
+            "module/wifi" = {
+              "inherit" = "network-base";
+              interface.type = "wireless";
+              label.connected = {
+                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}  %essid% %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
+                foreground = ''''${colors.base0B}''; 
+              };
+              label.disconnected = {
+                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}睊%{A}";
+                foreground = ''''${colors.base03}''; 
+              };
+            };
+
+            "module/bluetooth" = {
+              type = "custom/script";
+              exec = "/etc/profiles/per-user/jocelyn/bin/bluetooth";
+              interval = 2;
+              click-right = "/etc/profiles/per-user/jocelyn/bin/toggle_bluetooth";
             };
 
             "module/sep" = {
@@ -574,6 +603,13 @@ in
                 text = "|";
                 foreground = ''''${colors.base03}'';
               };
+            };
+
+            "module/mic" = {
+              type = "custom/script";
+              exec = "/etc/profiles/per-user/jocelyn/bin/mic --listen";
+              tail = true;
+              click-left = "/etc/profiles/per-user/jocelyn/bin/mic --toggle &";
             };
             
           };
@@ -824,9 +860,11 @@ in
   xdg.configFile."networkmanager-dmenu/config.ini" = {
     text = ''
       [dmenu]
-      dmenu_command = rofi -dmenu -i -theme ~/.config/rofi/networkmenu.rasi
+      dmenu_command = ${pkgs.rofi}/bin/rofi -dmenu -i -theme ~/.config/rofi/networkmenu.rasi
       rofi_highlight = True
-      list_saved = True
+
+      [dmenu_passphrase]
+      obscure = True
     '';
   };
 
@@ -834,8 +872,8 @@ in
     text = ''
       * {
         al:   #00000000;
-        bg:   #${config.colorScheme.colors.base00}aa;
-        bga:  #${config.colorScheme.colors.base01}aa;
+        bg:   #${config.colorScheme.colors.base00}cc;
+        bga:  #${config.colorScheme.colors.base01}cc;
         fg:   #${config.colorScheme.colors.base07}ff;
         ac:   #${config.colorScheme.colors.base08}ff;
         se:   #${config.colorScheme.colors.base0C}ff;
@@ -846,6 +884,7 @@ in
   xdg.configFile."rofi/launcher.rasi".source = ./rofi/themes/launcher.rasi;
   xdg.configFile."rofi/networkmenu.rasi".source = ./rofi/themes/networkmenu.rasi;
   xdg.configFile."rofi/powermenu.rasi".source = ./rofi/themes/powermenu.rasi;
+
 
   programs = {
     home-manager.enable = true;
@@ -1003,8 +1042,8 @@ in
       enable = true;
       hooks = {
         postswitch = {
-          "notify-change" = "${pkgs.libnotify}/bin/notify-send -i display 'Display profile' \"$AUTORANDR_CURRENT_PROFILE\"";
-          "change-background" = "${pkgs.feh}/bin/feh --bg-fill /home/jocelyn/Pictures/gruvbox/tropics.jpg";
+          "notify-change" = "${pkgs.libnotify}/bin/notify-send -i display 'Display profile' -t 1000 \"$AUTORANDR_CURRENT_PROFILE\"";
+          "change-background" = "${pkgs.feh}/bin/feh --bg-fill /home/${user}/Pictures/gruvbox/tropics.jpg";
         };
       };
       profiles = {

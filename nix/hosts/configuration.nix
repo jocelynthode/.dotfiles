@@ -101,6 +101,8 @@ in {
       curl
       gcc
       fzf
+      pulseaudio
+      pamixer
 
       libsForQt5.full
     ];
