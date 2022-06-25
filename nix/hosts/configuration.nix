@@ -133,7 +133,21 @@ in {
       xkbVariant = "altgr-intl";
       displayManager = {
           defaultSession = "none+i3";
-          lightdm.enable = true;
+          lightdm = {
+            enable = true;
+            greeters.gtk.theme = {
+              package = pkgs.gnome.adwaita-icon-theme;
+              name = "Adwaita";
+            };
+            greeters.gtk.iconTheme  = {
+              package = pkgs.gnome.adwaita-icon-theme;
+              name = "Adwaita";
+            };
+            greeters.gtk.cursorTheme = {
+              package = pkgs.gnome.adwaita-icon-theme;
+              name = "Adwaita";
+            };
+          };
           setupCommands = ''
            ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-0 --off
            ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --primary --mode 2560x1440 --pos 1920x0 --right-of HDMI-0 

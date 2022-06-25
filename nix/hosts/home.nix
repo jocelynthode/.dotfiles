@@ -34,7 +34,7 @@ in
     homeDirectory = "/home/${user}";
     pointerCursor = {
       package = pkgs.gnome.adwaita-icon-theme;
-      name = "Adwaita-dark";
+      name = "Adwaita";
       x11.enable = true;
     };
 
@@ -75,6 +75,7 @@ in
       toggle-bluetooth
       mic
       ponymix
+      playerctl
     ];
     stateVersion = "22.11";
   };
@@ -104,6 +105,9 @@ in
       window = {
         titlebar = false;
         border = 2;
+        commands = [
+          { command = "move to workspace 8"; criteria = { class = "Spotify"; }; }
+        ];
       };
       colors = {
         focused = {
@@ -276,15 +280,15 @@ in
   gtk = {
     enable = true;
     iconTheme = {
-      name = "Adwaita-dark";
+      name = "Adwaita";
       package = pkgs.gnome3.adwaita-icon-theme;
     };
     theme = {
-      name = "Adwaita-dark";
+      name = "Adwaita";
       package = pkgs.gnome3.adwaita-icon-theme;
     };
     cursorTheme = {
-      name = "Adwaita-dark";
+      name = "Adwaita";
       package = pkgs.gnome3.adwaita-icon-theme;
     };
   };
@@ -301,7 +305,7 @@ in
     dunst = {
       enable = true;
       iconTheme = {
-        name = "Adwaita-dark";
+        name = "Adwaita";
         package = pkgs.gnome3.adwaita-icon-theme;
         size = "16x16";
       };
@@ -309,13 +313,28 @@ in
         global = {
           monitor = 0;
           geometry = "0x0-50+65";
-          shrink = "yes";
-          transparency = 10;
-          padding = 16;
-          horizontal_padding = 16;
           font = "JetBrainsMono Nerd Font 10";
           line_height = 4;
+          frame_width = 2;
+          padding = 16;
+          horizontal_padding = 12;
           format = ''<b>%s</b>\n%b'';
+          frame_color = "#${config.colorScheme.colors.base0C}FF";
+          separator_color = "frame";
+        };
+        urgency_low = {
+          background = "#${config.colorScheme.colors.base01}CC";
+          foreground = "#${config.colorScheme.colors.base06}CC";
+        };
+
+        urgency_normal = {
+          background = "#${config.colorScheme.colors.base01}CC";
+          foreground = "#${config.colorScheme.colors.base06}CC";
+        };
+
+        urgency_critical = {
+          background = "#${config.colorScheme.colors.base01}DD";
+          foreground = "#${config.colorScheme.colors.base06}DD";
         };
       };
     };
@@ -376,7 +395,7 @@ in
 
               modules = {
                 left = "xworkspaces sep cpu memory fs";
-                center = "date";
+                center = "player date";
                 right = "battery eth wifi bluetooth sep mic volume brightness";
               };
               separator = "";
@@ -401,11 +420,9 @@ in
             "module/date" = {
               type = "internal/date";
               internal = 5;
-              date = {
-                text = "%H:%M:%S";
-                alt = "%Y-%m-%d %H:%M:%S";
-              };
-              label = "%date%";
+              date = "%a, %d %b %Y";
+              time = "%H:%M:%S";
+              label = "%date% at %time%";
               format = {
                 text = "<label>";
                 prefix = {
@@ -422,7 +439,7 @@ in
                 active = {
                   text = "%name%";
                   background = ''''${colors.base01}'';
-                  underline = ''''${colors.base0B}'';
+                  underline = ''''${colors.base0C}'';
                   padding = 1;
                 };
                 occupied = {
@@ -612,6 +629,18 @@ in
               click-left = "/etc/profiles/per-user/jocelyn/bin/mic --toggle &";
             };
             
+            "module/player" = {
+              type = "custom/script";
+              interval = 3;
+              format.prefix = {
+                text = "阮 ";
+                foreground =''''${colors.base0B}''; 
+              };
+              exec = {
+                text = "${pkgs.playerctl}/bin/playerctl --player spotify metadata --format '{{artist}} - {{title}}  %{F#${config.colorScheme.colors.base03}}|%{F-}'";
+                "if" = ''[[ "$(${pkgs.playerctl}/bin/playerctl --player spotify status)" = "Playing" ]]'';
+              };
+            };
           };
       script = "polybar main &";
     };
