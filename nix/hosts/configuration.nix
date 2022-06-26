@@ -135,7 +135,6 @@ in
   programs = {
     dconf.enable = true;
     steam.enable = true;
-    nm-applet.enable = true;
     ssh = {
       startAgent = true;
       askPassword = "";

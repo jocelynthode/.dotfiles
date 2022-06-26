@@ -53,6 +53,7 @@ in
       delta
       libnotify
       xsel
+      gnumake
 
       # Video/Audio
       feh # Image Viewer
@@ -87,14 +88,18 @@ in
       cargo
       mpv
       spicetify-cli
+      kubectl
+      kubectx
+      kubelogin-oidc
+      kubernetes-helm
     ];
     stateVersion = "22.11";
   };
 
-  # Fix polybar not starting up
-  systemd.user.services.polybar = {
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  # # Fix polybar not starting up
+  # systemd.user.services.polybar = {
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
 
   xsession = {
     enable = true;
@@ -259,9 +264,10 @@ in
           "${mod}+Shift+e" = ''exec --no-startup-id ${pkgs.rofi}/bin/rofi -show menu -modi "menu:rofi-power-menu" -theme powermenu'';
           "${mod}+Shift+n" = ''exec --no-startup-id ${pkgs.rofi-rbw}/bin/rofi-rbw -a copy --clear-after 60  --prompt "" --selector-args="-theme rbw"'';
           "${mod}+r" = "mode resize";
-          "XF86AudioMicMute" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+          "XF86AudioMute" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
           "XF86AudioRaiseVolume" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
           "XF86AudioLowerVolume" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
+          "XF86AudioPlay" = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --player spotify play-pause";
         };
         assigns = {
           "2" = [
@@ -324,7 +330,15 @@ in
         "Xautolock.killer: systemctl suspend"
       ];
     };
-    flameshot.enable = true;
+    flameshot = {
+      enable = true;
+      settings = {
+        General = {
+          disabledTrayIcon = true;
+          showStartupLaunchMessage = false;
+        };
+      };
+    };
     dunst = {
       enable = true;
       iconTheme = {
