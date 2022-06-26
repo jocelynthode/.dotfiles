@@ -56,17 +56,17 @@ in
 
       # Video/Audio
       feh # Image Viewer
-      vlc # Media Player
 
       # Apps
       google-chrome # Browser
       remmina # XRDP & VNC Client
+      xdragon
+
 
       # File Management
       rsync # Syncer $ rsync -r dir1/ dir2/
       unzip # Zip files
 
-      flavours
       spotify
       signal-desktop
       pavucontrol
@@ -85,6 +85,8 @@ in
       go
       nodejs
       cargo
+      mpv
+      spicetify-cli
     ];
     stateVersion = "22.11";
   };
@@ -708,6 +710,248 @@ in
     };
   };
 
+  xdg.configFile."spicetify/Themes/Base16/color.ini".text = ''
+    [Base]
+    text               = ${config.colorScheme.colors.base07}
+    subtext            = ${config.colorScheme.colors.base05} 
+    sidebar-text       = ${config.colorScheme.colors.base07} 
+    main               = ${config.colorScheme.colors.base00} 
+    sidebar            = ${config.colorScheme.colors.base00} 
+    player             = ${config.colorScheme.colors.base00} 
+    card               = ${config.colorScheme.colors.base00} 
+    shadow             = ${config.colorScheme.colors.base00} 
+    selected-row       = ${config.colorScheme.colors.base05} 
+    button             = ${config.colorScheme.colors.base08} 
+    button-active      = ${config.colorScheme.colors.base0F} 
+    button-disabled    = ${config.colorScheme.colors.base04} 
+    tab-active         = ${config.colorScheme.colors.base09} 
+    notification       = ${config.colorScheme.colors.base0C} 
+    notification-error = ${config.colorScheme.colors.base09} 
+    misc               = ${config.colorScheme.colors.base09} 
+  '';
+
+  xdg.configFile."spicetify/Themes/Base16/user.css".text = ''
+    /* Page titles */
+    h1 {
+      font-weight: 700 !important;
+    }
+
+    /* Song name in player */
+    .main-nowPlayingWidget-nowPlaying .main-trackInfo-name {
+      overflow: unset;
+      font-size: 15px !important;
+    }
+
+    /* Artist name in player */
+    .main-nowPlayingWidget-nowPlaying .main-trackInfo-artists {
+      overflow: unset;
+      padding-top: 5px;
+      font-size: 13px;
+    }
+
+    .main-type-finale {
+      line-height: 17px;
+    }
+
+    /* Icons */
+    .main-trackList-rowPlayPauseIcon {
+      transform: scale(1.3);
+    }
+
+    .x-downloadButton-button svg {
+      height: 32px;
+      width: 32px;
+    }
+
+    /* Progress and remaining time */
+    .main-playbackBarRemainingTime-container,
+    .playback-bar__progress-time-elapsed,
+    .playback-bar__progress-time {
+      font-size: 15px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    /* Player play button */
+    .main-playPauseButton-button {
+      background-color: unset;
+      color: var(--spice-subtext);
+    }
+
+    .main-playPauseButton-button svg {
+      height: 28px;
+      width: 28px;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      --fg-color: var(--spice-button);
+    }
+
+    .progress-bar__bg,
+    .progress-bar__fg,
+    .progress-bar__fg_wrapper {
+      height: 5px;
+    }
+
+    .progress-bar-wrapper {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    /* Extra controls */
+    .control-button::before {
+      font-size: 20px;
+    }
+
+    .ExtraControls svg {
+      height: 20px;
+      width: 20px;
+    }
+
+    /* Removing gradients */
+    .main-entityHeader-backgroundColor,
+    .main-actionBarBackground-background {
+      background-color: unset !important;
+      background-image: none;
+    }
+
+    /* Cover shadow */
+    .main-entityHeader-shadow {
+      -webkit-box-shadow: 0 4px 20px rgba(var(--spice-rgb-shadow), 0.5);
+      box-shadow: 0 4px 20px rgba(var(--spice-rgb-shadow), 0.5);
+    }
+
+    /* Top bar */
+    .main-topBar-background {
+      background-color: #3a3d42 !important;
+    }
+
+    /* Playing icon */
+    .main-trackList-playingIcon {
+      filter: saturate(0%);
+    }
+
+    /* Playlist like button */
+    .main-actionBar-ActionBarRow .main-addButton-button .Svg-ulyrgf-0 {
+      height: unset;
+      width: unset;
+    }
+
+    /* Order button */
+    .x-sortBox-sortDropdown {
+      margin-top: 3px;
+    }
+
+    /* Sidebar playlists menu */
+    .main-rootlist-rootlistDividerGradient {
+      background: unset;
+    }
+
+    .main-rootlist-rootlistDivider {
+      background-color: var(--spice-button);
+    }
+
+    /* Search box */
+    .x-searchInput-searchInputInput {
+      font-size: 18px;
+    }
+
+    /* Aritsts names */
+    .main-type-mesto {
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    /* Songs names */
+    .main-type-ballad {
+      font-size: 18px;
+    }
+
+    /* Cards descriptions */
+    .main-cardSubHeader-root {
+      overflow: hidden !important;
+    }
+
+    /* Ad title */
+    .desktoproutes-homepage-takeover-ad-hptoNativeOriginal-header {
+      font-weight: 700 !important;
+    }
+
+    /* Friends names */
+    .main-buddyFeed-username a {
+      color: var(--spice-text) !important;
+      font-weight: 500;
+    }
+
+    /* Cover height */
+    .main-coverSlotExpanded-container {
+      height: var(--nav-bar-width) + 8px;
+    }
+
+    /* Scrollbars */
+    .os-scrollbar-handle {
+      background: var(--spice-button) !important;
+      border-radius: 8px;
+    }
+
+    /* Making index column wider so that lighter background that 
+    highlights selected song contains multi-digit song numbers */
+    /* It looks good up to 4 digits, I figured that no one has playlists with more music than that ;) */
+    .main-trackList-trackList.main-trackList-indexable
+      .main-trackList-trackListRowGrid {
+      grid-template-columns: [index] 48px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(
+          120px,
+          1fr
+        ) !important;
+    }
+
+    /* Text boxes in settings */
+    .main-dropDown-dropDown {
+      background-color: var(--spice-button-disabled);
+    }
+
+    /* Facebook button */
+    .x-settings-facebookButton {
+      background-color: unset !important;
+    }
+
+    /* Playlist play button color */
+    .encore-dark-theme .encore-bright-accent-set,
+    .encore-dark-theme .encore-bright-accent-set:hover {
+      background-color: var(--spice-button) !important;
+    }
+
+    /* Volume bar margins */
+    .volume-bar .progress-bar {
+      margin: 0 0.4rem;
+    }
+
+    .volume-bar .playback-progressbar {
+      width: 70%;
+    }
+
+    .volume-bar {
+      flex: 0 150px;
+    }
+
+    /* Removal of empty space above playlist cover and title on narrow viewports */
+    .main-entityHeader-container.main-entityHeader-nonWrapped {
+      min-height: 325px;
+      height: 15vh;
+    }
+  '';
+
+  xdg.configFile."ranger/rc.conf".text = ''
+    default_linemode devicons
+    map <C-d> shell dragon -a -x %p
+  '';
+  xdg.configFile."ranger/plugins/ranger_devicons".source = pkgs.fetchFromGitHub {
+    owner = "alexanderjeurissen";
+    repo = "ranger_devicons";
+    rev = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
+    sha256 = "sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
+  };
 
   xdg.configFile."kitty/tab_bar.py" = {
     text = ''
@@ -942,6 +1186,37 @@ in
   xdg.configFile."rofi/powermenu.rasi".source = ./rofi/themes/powermenu.rasi;
   xdg.configFile."rofi/rbw.rasi".source = ./rofi/themes/rbw.rasi;
 
+  xdg.mimeApps.defaultApplications = {
+    "inode/directory" = "ranger.desktop";
+    "application/pdf" = "firefox.desktop";
+  };
+
+  xresources.properties = {
+    "*background" = "#${config.colorScheme.colors.base00}";
+    "*foreground" = "#${config.colorScheme.colors.base07}";
+    "*color0" = "#${config.colorScheme.colors.base00}";
+    "*color1" = "#${config.colorScheme.colors.base08}";
+    "*color2" = "#${config.colorScheme.colors.base0B}";
+    "*color3" = "#${config.colorScheme.colors.base0A}";
+    "*color4" = "#${config.colorScheme.colors.base0D}";
+    "*color5" = "#${config.colorScheme.colors.base0E}";
+    "*color6" = "#${config.colorScheme.colors.base0C}";
+    "*color7" = "#${config.colorScheme.colors.base05}";
+    "*color8" = "#${config.colorScheme.colors.base03}";
+    "*color9" = "#${config.colorScheme.colors.base08}";
+    "*color10" = "#${config.colorScheme.colors.base0B}";
+    "*color11" = "#${config.colorScheme.colors.base0A}";
+    "*color12" = "#${config.colorScheme.colors.base0D}";
+    "*color13" = "#${config.colorScheme.colors.base0E}";
+    "*color14" = "#${config.colorScheme.colors.base0C}";
+    "*color15" = "#${config.colorScheme.colors.base07}";
+    "*color16" = "#${config.colorScheme.colors.base09}";
+    "*color17" = "#${config.colorScheme.colors.base0F}";
+    "*color18" = "#${config.colorScheme.colors.base01}";
+    "*color19" = "#${config.colorScheme.colors.base02}";
+    "*color20" = "#${config.colorScheme.colors.base04}";
+    "*color21" = "#${config.colorScheme.colors.base06}";
+  };
 
   programs = {
     home-manager.enable = true;
@@ -1076,6 +1351,7 @@ in
       font.name = "JetBrainsMono Nerd Font Mono";
       settings = {
         background_opacity = "0.90";
+        allow_remote_control = "yes";
 
         tab_bar_style = "custom";
         tab_separator = "\" ▎\"";

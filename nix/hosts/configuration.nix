@@ -104,6 +104,7 @@ in
       TERMINAL = "kitty";
       EDITOR = "nvim";
       VISUAL = "nvim";
+      PAGER = "bat";
       GTK_THEME = "Adwaita:dark";
     };
     sessionVariables = {
@@ -124,6 +125,7 @@ in
       blueberry
       any-nix-shell
       exa
+      ranger
     ];
   };
 
