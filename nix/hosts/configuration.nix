@@ -105,10 +105,9 @@ in
       EDITOR = "nvim";
       VISUAL = "nvim";
       PAGER = "bat";
-      GTK_THEME = "Adwaita:dark";
     };
     sessionVariables = {
-      GTK_THEME = "Adwaita:dark";
+      GTK_THEME = "Qogir-Dark";
     };
     systemPackages = with pkgs; [
       # Default packages install system-wide
@@ -164,17 +163,21 @@ in
         defaultSession = "none+i3";
         lightdm = {
           enable = true;
-          greeters.gtk.theme = {
-            package = pkgs.gnome3.adwaita-icon-theme;
-            name = "Adwaita";
-          };
-          greeters.gtk.iconTheme = {
-            package = pkgs.papirus-icon-theme;
-            name = "Papirus";
-          };
-          greeters.gtk.cursorTheme = {
-            package = pkgs.gnome3.adwaita-icon-theme;
-            name = "Adwaita";
+          background = "/home/jocelyn/Pictures/gruvbox/cascade.jpg";
+          greeters.gtk = {
+            enable = true;
+            theme = {
+              package = pkgs.qogir-theme;
+              name = "Qogir-Dark";
+            };
+            iconTheme = {
+              package = pkgs.papirus-icon-theme;
+              name = "Papirus";
+            };
+            cursorTheme = {
+              package = pkgs.gnome.adwaita-icon-theme;
+              name = "Adwaita";
+            };
           };
         };
         setupCommands = ''

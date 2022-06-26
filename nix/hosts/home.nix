@@ -38,7 +38,7 @@ in
     username = "${user}";
     homeDirectory = "/home/${user}";
     pointerCursor = {
-      package = pkgs.gnome3.adwaita-icon-theme;
+      package = pkgs.gnome.adwaita-icon-theme;
       name = "Adwaita";
       size = 16;
       x11.enable = true;
@@ -306,12 +306,12 @@ in
       package = pkgs.papirus-icon-theme;
     };
     theme = {
-      name = "Adwaita";
-      package = pkgs.gnome3.adwaita-icon-theme;
+      name = "Qogir-Dark";
+      package = pkgs.qogir-theme;
     };
     cursorTheme = {
       name = "Adwaita";
-      package = pkgs.gnome3.adwaita-icon-theme;
+      package = pkgs.gnome.adwaita-icon-theme;
     };
   };
 
