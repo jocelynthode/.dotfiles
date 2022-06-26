@@ -6,7 +6,7 @@
 #   │   └─ home.nix *
 #
 
-{ config, lib, pkgs, user, nix-colors, ... }:
+{ config, lib, pkgs, user, nix-colors, nur, ... }:
 let
   mod = "Mod4";
   alt = "Mod1";
@@ -17,14 +17,19 @@ let
     inherit pkgs;
   };
 
-  mic= import ./polybar/scripts/mic.nix {
+  mic = import ./polybar/scripts/mic.nix {
+    inherit pkgs config;
+  };
+
+  rofi-pulse = import ./rofi/scripts/pulse-select.nix {
     inherit pkgs config;
   };
 in
-{ 
+{
 
   imports = [
     nix-colors.homeManagerModule
+    nur.nixosModules.nur
   ];
 
   colorScheme = nix-colors.colorSchemes.gruvbox-dark-hard;
@@ -33,33 +38,33 @@ in
     username = "${user}";
     homeDirectory = "/home/${user}";
     pointerCursor = {
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.gnome3.adwaita-icon-theme;
       name = "Adwaita";
+      size = 16;
       x11.enable = true;
     };
 
 
     packages = with pkgs; [
       # Terminal
-      htop              # Resource Manager
+      htop # Resource Manager
       fd
       ripgrep
       delta
       libnotify
       xsel
-      
+
       # Video/Audio
-      feh               # Image Viewer
-      vlc               # Media Player
+      feh # Image Viewer
+      vlc # Media Player
 
       # Apps
-      firefox           # Browser
-      google-chrome     # Browser
-      remmina           # XRDP & VNC Client
+      google-chrome # Browser
+      remmina # XRDP & VNC Client
 
       # File Management
-      rsync             # Syncer $ rsync -r dir1/ dir2/
-      unzip             # Zip files
+      rsync # Syncer $ rsync -r dir1/ dir2/
+      unzip # Zip files
 
       flavours
       spotify
@@ -68,14 +73,18 @@ in
       betterlockscreen
       networkmanager_dmenu
       rofi-power-menu
-      rofi-pulse-select
       rofi-rbw
+      xdotool
       networkmanagerapplet
-      bluetooth
-      toggle-bluetooth
-      mic
       ponymix
       playerctl
+      bitwarden
+      slack
+      mumble
+      solaar
+      go
+      nodejs
+      cargo
     ];
     stateVersion = "22.11";
   };
@@ -85,193 +94,204 @@ in
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
-  xsession.windowManager.i3 = {
+  xsession = {
     enable = true;
-    config = {
-      modifier = mod;
-      bars = [ ]; # use kde panels instead
-      workspaceOutputAssign = [
-        { workspace = "1"; output = "DP4 eDP1 DP-2"; }
-        { workspace = "2"; output = "DP4 eDP1 DP-2"; }
-        { workspace = "3"; output = "DP4 eDP1 DP-2"; }
-        { workspace = "4"; output = "DP4 eDP1 DP-2"; }
-        { workspace = "5"; output = "DP4 eDP1 DP-2"; }
-        { workspace = "6"; output = "eDP1 DP4 HDMI-0"; }
-        { workspace = "7"; output = "eDP1 DP4 HDMI-0"; }
-        { workspace = "8"; output = "eDP1 DP4 HDMI-0"; }
-        { workspace = "9"; output = "eDP1 DP4 HDMI-0"; }
-        { workspace = "10"; output = "eDP1 DP4 HDMI-0"; }
-      ];
-      window = {
-        titlebar = false;
-        border = 2;
-        commands = [
-          { command = "move to workspace 8"; criteria = { class = "Spotify"; }; }
+    profileExtra = ''
+      eval $(${pkgs.gnome3.gnome-keyring}/bin/gnome-keyring-daemon --daemonize --components=ssh,secrets)
+      export SSH_AUTH_SOCK
+    '';
+    windowManager.i3 = {
+      enable = true;
+      config = {
+        modifier = mod;
+        bars = [ ]; # use kde panels instead
+        workspaceOutputAssign = [
+          { workspace = "1"; output = "DP4 eDP1 DP-2"; }
+          { workspace = "2"; output = "DP4 eDP1 DP-2"; }
+          { workspace = "3"; output = "DP4 eDP1 DP-2"; }
+          { workspace = "4"; output = "DP4 eDP1 DP-2"; }
+          { workspace = "5"; output = "DP4 eDP1 DP-2"; }
+          { workspace = "6"; output = "eDP1 DP4 HDMI-0"; }
+          { workspace = "7"; output = "eDP1 DP4 HDMI-0"; }
+          { workspace = "8"; output = "eDP1 DP4 HDMI-0"; }
+          { workspace = "9"; output = "eDP1 DP4 HDMI-0"; }
+          { workspace = "10"; output = "eDP1 DP4 HDMI-0"; }
         ];
-      };
-      colors = {
-        focused = {
-          border = "#${config.colorScheme.colors.base05}";
-          background = "#${config.colorScheme.colors.base0D}";
-          text = "#${config.colorScheme.colors.base00}";
-          indicator= "#${config.colorScheme.colors.base0D}";
-          childBorder = "#${config.colorScheme.colors.base0C}";
+        window = {
+          titlebar = false;
+          border = 2;
+          commands = [
+            { command = "move to workspace 8"; criteria = { class = "Spotify"; }; }
+          ];
         };
-        focusedInactive = {
-          border = "#${config.colorScheme.colors.base01}";
-          background = "#${config.colorScheme.colors.base01}";
-          text = "#${config.colorScheme.colors.base05}";
-          indicator= "#${config.colorScheme.colors.base03}";
-          childBorder = "#${config.colorScheme.colors.base01}";
+        colors = {
+          focused = {
+            border = "#${config.colorScheme.colors.base05}";
+            background = "#${config.colorScheme.colors.base0D}";
+            text = "#${config.colorScheme.colors.base00}";
+            indicator = "#${config.colorScheme.colors.base0D}";
+            childBorder = "#${config.colorScheme.colors.base0C}";
+          };
+          focusedInactive = {
+            border = "#${config.colorScheme.colors.base01}";
+            background = "#${config.colorScheme.colors.base01}";
+            text = "#${config.colorScheme.colors.base05}";
+            indicator = "#${config.colorScheme.colors.base03}";
+            childBorder = "#${config.colorScheme.colors.base01}";
+          };
+          unfocused = {
+            border = "#${config.colorScheme.colors.base01}";
+            background = "#${config.colorScheme.colors.base00}";
+            text = "#${config.colorScheme.colors.base05}";
+            indicator = "#${config.colorScheme.colors.base01}";
+            childBorder = "#${config.colorScheme.colors.base01}";
+          };
+          urgent = {
+            border = "#${config.colorScheme.colors.base08}";
+            background = "#${config.colorScheme.colors.base08}";
+            text = "#${config.colorScheme.colors.base00}";
+            indicator = "#${config.colorScheme.colors.base08}";
+            childBorder = "#${config.colorScheme.colors.base08}";
+          };
+          placeholder = {
+            border = "#${config.colorScheme.colors.base00}";
+            background = "#${config.colorScheme.colors.base00}";
+            text = "#${config.colorScheme.colors.base05}";
+            indicator = "#${config.colorScheme.colors.base00}";
+            childBorder = "#${config.colorScheme.colors.base00}";
+          };
+          background = "#${config.colorScheme.colors.base07}";
         };
-        unfocused = {
-          border = "#${config.colorScheme.colors.base01}";
-          background = "#${config.colorScheme.colors.base00}";
-          text = "#${config.colorScheme.colors.base05}";
-          indicator= "#${config.colorScheme.colors.base01}";
-          childBorder = "#${config.colorScheme.colors.base01}";
-        };
-        urgent = {
-          border = "#${config.colorScheme.colors.base08}";
-          background = "#${config.colorScheme.colors.base08}";
-          text = "#${config.colorScheme.colors.base00}";
-          indicator= "#${config.colorScheme.colors.base08}";
-          childBorder = "#${config.colorScheme.colors.base08}";
-        };
-        placeholder = {
-          border = "#${config.colorScheme.colors.base00}";
-          background = "#${config.colorScheme.colors.base00}";
-          text = "#${config.colorScheme.colors.base05}";
-          indicator= "#${config.colorScheme.colors.base00}";
-          childBorder = "#${config.colorScheme.colors.base00}";
-        };
-        background = "#${config.colorScheme.colors.base07}";
-      };
 
-      floating = {
-        border = 0;
-        criteria = [
-          { window_role = "pop-up"; }
-          { window_role = "task_dialog"; }
-          { window_type = "notification"; }
-          { window_type = "dialog"; }
-          { class = "easyeffects"; }
-          { class = "ProtonUp-Qt"; }
-          { class = "mullvad vpn"; }
-          { class = "Solaar"; }
-          { class = "org.remmina.Remmina"; }
-          { class = "Nm-connection-editor"; }
-          { class = "Pavucontrol"; }
-        ];
-      };
+        floating = {
+          border = 0;
+          criteria = [
+            { window_role = "pop-up"; }
+            { window_role = "task_dialog"; }
+            { window_type = "notification"; }
+            { window_type = "dialog"; }
+            { class = "easyeffects"; }
+            { class = "ProtonUp-Qt"; }
+            { class = "mullvad vpn"; }
+            { class = "Solaar"; }
+            { class = "org.remmina.Remmina"; }
+            { class = "Nm-connection-editor"; }
+            { class = "Pavucontrol"; }
+          ];
+        };
 
-      workspaceAutoBackAndForth = true;
-      focus = {
-        followMouse = true;
-        newWindow = "focus";
-      };
+        workspaceAutoBackAndForth = true;
+        focus = {
+          followMouse = true;
+          newWindow = "focus";
+        };
 
 
-      gaps = {
-        inner = 10;
-        outer = -3;
-        smartGaps = false;
-        smartBorders = "off";
-      };
-      
-      startup = [
-      { command = "${pkgs.autorandr}/bin/autorandr --change --force"; always = true; notification = false; }
-      { command = "${pkgs.dex}/bin/dex --autostart --environment i3"; notification = false; }
-      ];
-      keybindings = {
-        "${mod}+Return" = "exec kitty";
-        "${mod}+Shift+q" = "kill";
-        "${mod}+x" = "[urgent=latest] focus";
-        "${mod}+h" = "focus left";
-        "${mod}+j" = "focus down";
-        "${mod}+k" = "focus up";
-        "${mod}+l" = "focus right";
-        "${mod}+Left" = "focus left";
-        "${mod}+Down" = "focus down";
-        "${mod}+Up" = "focus up";
-        "${mod}+Right" = "focus right";
-        "${mod}+Shift+h" = "move left";
-        "${mod}+Shift+j" = "move down";
-        "${mod}+Shift+k" = "move up";
-        "${mod}+Shift+l" = "move right";
-        "${mod}+Shift+Left" = "move left";
-        "${mod}+Shift+Down" = "move down";
-        "${mod}+Shift+Up" = "move up";
-        "${mod}+Shift+Right" = "move right";
-        "${mod}+Ctrl+Shift+l" = "move workspace to output right";
-        "${mod}+Ctrl+Shift+h" = "move workspace to output left";
-        "${mod}+Ctrl+Shift+j" = "move workspace to output down";
-        "${mod}+Ctrl+Shift+k" = "move workspace to output up";
-        "${mod}+${alt}+h" = "split h";
-        "${mod}+${alt}+v" = "split v";
-        "${mod}+f" = "fullscreen toggle";
-        "${mod}+s" = "layout stacking";
-        "${mod}+w" = "layout tabbed";
-        "${mod}+e" = "layout toggle split";
-        "${mod}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show drun -modi drun -theme launcher";
-        "${mod}+Shift+space" = "floating toggle";
-        "${mod}+space" = "focus mode_toggle";
-        "${mod}+a" = "focus parent";
-        "${mod}+1" = "workspace number 1";
-        "${mod}+2" = "workspace number 2";
-        "${mod}+3" = "workspace number 3";
-        "${mod}+4" = "workspace number 4";
-        "${mod}+5" = "workspace number 5";
-        "${mod}+6" = "workspace number 6";
-        "${mod}+7" = "workspace number 7";
-        "${mod}+8" = "workspace number 8";
-        "${mod}+9" = "workspace number 9";
-        "${mod}+0" = "workspace number 10";
-        "${mod}+Shift+1" = "move container to workspace number 1; workspace 1";
-        "${mod}+Shift+2" = "move container to workspace number 2; workspace 2";
-        "${mod}+Shift+3" = "move container to workspace number 3; workspace 3";
-        "${mod}+Shift+4" = "move container to workspace number 4; workspace 4";
-        "${mod}+Shift+5" = "move container to workspace number 5; workspace 5";
-        "${mod}+Shift+6" = "move container to workspace number 6; workspace 6";
-        "${mod}+Shift+7" = "move container to workspace number 7; workspace 7";
-        "${mod}+Shift+8" = "move container to workspace number 8; workspace 8";
-        "${mod}+Shift+9" = "move container to workspace number 9; workspace 9";
-        "${mod}+Shift+0" = "move container to workspace number 10; workspace 10";
-        "${mod}+Shift+c" = "reload";
-        "${mod}+Shift+r" = "restart";
-        "${mod}+Shift+e" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show menu -modi \"menu:rofi-power-menu\" -theme powermenu";
-        "${mod}+r" = "mode resize";
-      };
-      assigns = {
-        "2" = [
-          { class = "Firefoxdeveloperedition"; }
+        gaps = {
+          inner = 10;
+          outer = -3;
+          smartGaps = false;
+          smartBorders = "off";
+        };
+
+        startup = [
+          { command = "${pkgs.autorandr}/bin/autorandr --change --force"; always = true; notification = false; }
+          { command = "${pkgs.dex}/bin/dex --autostart --environment i3"; notification = false; }
         ];
-        "3" = [
-          { class = "Falendar"; }
-          { class = "Kmail"; }
-        ];
-        "4" = [
-          { class = "Steam"; }
-        ];
-        "7" = [
-          { class = "Signal"; }
-          { class = "Slack"; }
-          { class = "Discord"; }
-          { class = "Mumble"; }
-        ];
-        "9" = [
-          { class = "Bitwarden"; }
-        ];
-      };
-      modes = {
-        resize = {
-          "j" = "resize shrink width 10 px or 10 ppt";
-          "k" = "resize grow height 10 px or 10 ppt";
-          "l" = "resize shrink height 10 px or 10 ppt";
-          "semicolon" = "resize grow width 10 px or 10 ppt";
-          "Return" = "mode default";
-          "Escape" = "mode default";
-          "$mod+r" = "mode default";
+        keybindings = {
+          "${mod}+Return" = "exec kitty";
+          "${mod}+Shift+q" = "kill";
+          "${mod}+x" = "[urgent=latest] focus";
+          "${mod}+h" = "focus left";
+          "${mod}+j" = "focus down";
+          "${mod}+k" = "focus up";
+          "${mod}+l" = "focus right";
+          "${mod}+Left" = "focus left";
+          "${mod}+Down" = "focus down";
+          "${mod}+Up" = "focus up";
+          "${mod}+Right" = "focus right";
+          "${mod}+Shift+h" = "move left";
+          "${mod}+Shift+j" = "move down";
+          "${mod}+Shift+k" = "move up";
+          "${mod}+Shift+l" = "move right";
+          "${mod}+Shift+Left" = "move left";
+          "${mod}+Shift+Down" = "move down";
+          "${mod}+Shift+Up" = "move up";
+          "${mod}+Shift+Right" = "move right";
+          "${mod}+Ctrl+Shift+l" = "move workspace to output right";
+          "${mod}+Ctrl+Shift+h" = "move workspace to output left";
+          "${mod}+Ctrl+Shift+j" = "move workspace to output down";
+          "${mod}+Ctrl+Shift+k" = "move workspace to output up";
+          "${mod}+${alt}+h" = "split h";
+          "${mod}+${alt}+v" = "split v";
+          "${mod}+f" = "fullscreen toggle";
+          "${mod}+s" = "layout stacking";
+          "${mod}+w" = "layout tabbed";
+          "${mod}+e" = "layout toggle split";
+          "${mod}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show drun -modi drun -theme launcher";
+          "${mod}+Shift+space" = "floating toggle";
+          "${mod}+space" = "focus mode_toggle";
+          "${mod}+a" = "focus parent";
+          "${mod}+1" = "workspace number 1";
+          "${mod}+2" = "workspace number 2";
+          "${mod}+3" = "workspace number 3";
+          "${mod}+4" = "workspace number 4";
+          "${mod}+5" = "workspace number 5";
+          "${mod}+6" = "workspace number 6";
+          "${mod}+7" = "workspace number 7";
+          "${mod}+8" = "workspace number 8";
+          "${mod}+9" = "workspace number 9";
+          "${mod}+0" = "workspace number 10";
+          "${mod}+Shift+1" = "move container to workspace number 1; workspace 1";
+          "${mod}+Shift+2" = "move container to workspace number 2; workspace 2";
+          "${mod}+Shift+3" = "move container to workspace number 3; workspace 3";
+          "${mod}+Shift+4" = "move container to workspace number 4; workspace 4";
+          "${mod}+Shift+5" = "move container to workspace number 5; workspace 5";
+          "${mod}+Shift+6" = "move container to workspace number 6; workspace 6";
+          "${mod}+Shift+7" = "move container to workspace number 7; workspace 7";
+          "${mod}+Shift+8" = "move container to workspace number 8; workspace 8";
+          "${mod}+Shift+9" = "move container to workspace number 9; workspace 9";
+          "${mod}+Shift+0" = "move container to workspace number 10; workspace 10";
+          "${mod}+Shift+c" = "reload";
+          "${mod}+Shift+r" = "restart";
+          "${mod}+Shift+e" = ''exec --no-startup-id ${pkgs.rofi}/bin/rofi -show menu -modi "menu:rofi-power-menu" -theme powermenu'';
+          "${mod}+Shift+n" = ''exec --no-startup-id ${pkgs.rofi-rbw}/bin/rofi-rbw -a copy --clear-after 60  --prompt "" --selector-args="-theme rbw"'';
+          "${mod}+r" = "mode resize";
+          "XF86AudioMicMute" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+          "XF86AudioRaiseVolume" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%";
+          "XF86AudioLowerVolume" = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        };
+        assigns = {
+          "2" = [
+            { class = "Firefoxdeveloperedition"; }
+          ];
+          "3" = [
+            { class = "Falendar"; }
+            { class = "Kmail"; }
+          ];
+          "4" = [
+            { class = "Steam"; }
+          ];
+          "7" = [
+            { class = "Signal"; }
+            { class = "Slack"; }
+            { class = "Discord"; }
+            { class = "Mumble"; }
+          ];
+          "9" = [
+            { class = "Bitwarden"; }
+          ];
+        };
+        modes = {
+          resize = {
+            "j" = "resize shrink width 10 px or 10 ppt";
+            "k" = "resize grow height 10 px or 10 ppt";
+            "l" = "resize shrink height 10 px or 10 ppt";
+            "semicolon" = "resize grow width 10 px or 10 ppt";
+            "Return" = "mode default";
+            "Escape" = "mode default";
+            "$mod+r" = "mode default";
+          };
         };
       };
     };
@@ -280,8 +300,8 @@ in
   gtk = {
     enable = true;
     iconTheme = {
-      name = "Adwaita";
-      package = pkgs.gnome3.adwaita-icon-theme;
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
     };
     theme = {
       name = "Adwaita";
@@ -302,12 +322,13 @@ in
         "Xautolock.killer: systemctl suspend"
       ];
     };
+    flameshot.enable = true;
     dunst = {
       enable = true;
       iconTheme = {
-        name = "Adwaita";
-        package = pkgs.gnome3.adwaita-icon-theme;
-        size = "16x16";
+        name = "Papirus";
+        package = pkgs.papirus-icon-theme;
+        size = "32x32";
       };
       settings = {
         global = {
@@ -323,16 +344,19 @@ in
           separator_color = "frame";
         };
         urgency_low = {
+          fullscreen = "delay";
           background = "#${config.colorScheme.colors.base01}CC";
           foreground = "#${config.colorScheme.colors.base06}CC";
         };
 
         urgency_normal = {
+          fullscreen = "delay";
           background = "#${config.colorScheme.colors.base01}CC";
           foreground = "#${config.colorScheme.colors.base06}CC";
         };
 
         urgency_critical = {
+          fullscreen = "show";
           background = "#${config.colorScheme.colors.base01}DD";
           foreground = "#${config.colorScheme.colors.base06}DD";
         };
@@ -345,303 +369,306 @@ in
         pulseSupport = true;
       };
       settings = {
-            colors = {
-              base00 = "#${config.colorScheme.colors.base00}";
-              base01 = "#${config.colorScheme.colors.base01}";
-              base02 = "#${config.colorScheme.colors.base02}";
-              base03 = "#${config.colorScheme.colors.base03}";
-              base04 = "#${config.colorScheme.colors.base04}";
-              base05 = "#${config.colorScheme.colors.base05}";
-              base06 = "#${config.colorScheme.colors.base06}";
-              base07 = "#${config.colorScheme.colors.base07}";
-              base08 = "#${config.colorScheme.colors.base08}";
-              base09 = "#${config.colorScheme.colors.base09}";
-              base0A = "#${config.colorScheme.colors.base0A}";
-              base0B = "#${config.colorScheme.colors.base0B}";
-              base0C = "#${config.colorScheme.colors.base0C}";
-              base0D = "#${config.colorScheme.colors.base0D}";
-              base0E = "#${config.colorScheme.colors.base0E}";
-              base0F = "#${config.colorScheme.colors.base0F}";
+        colors = {
+          base00 = "#${config.colorScheme.colors.base00}";
+          base01 = "#${config.colorScheme.colors.base01}";
+          base02 = "#${config.colorScheme.colors.base02}";
+          base03 = "#${config.colorScheme.colors.base03}";
+          base04 = "#${config.colorScheme.colors.base04}";
+          base05 = "#${config.colorScheme.colors.base05}";
+          base06 = "#${config.colorScheme.colors.base06}";
+          base07 = "#${config.colorScheme.colors.base07}";
+          base08 = "#${config.colorScheme.colors.base08}";
+          base09 = "#${config.colorScheme.colors.base09}";
+          base0A = "#${config.colorScheme.colors.base0A}";
+          base0B = "#${config.colorScheme.colors.base0B}";
+          base0C = "#${config.colorScheme.colors.base0C}";
+          base0D = "#${config.colorScheme.colors.base0D}";
+          base0E = "#${config.colorScheme.colors.base0E}";
+          base0F = "#${config.colorScheme.colors.base0F}";
 
-              transparent-base00 = "#CC${config.colorScheme.colors.base00}";
+          transparent-base00 = "#CC${config.colorScheme.colors.base00}";
+        };
+
+        bar = {
+          fill = "⏽";
+          empty = "⏽";
+          indicator = "";
+        };
+
+        "bar/main" = {
+          width = "100%";
+          height = "24pt";
+          radius = 0;
+          background = ''''${colors.transparent-base00}'';
+          foreground = ''''${colors.base07}'';
+          padding = 2;
+          line = {
+            size = 3;
+            color = ''''${colors.base00}'';
+          };
+          border.bottom = {
+            size = 0;
+            color = ''''${colors.base07}'';
+          };
+
+          module.margin = {
+            left = 1;
+            right = 1;
+          };
+
+          modules = {
+            left = "xworkspaces sep cpu memory fs";
+            center = "player date";
+            right = "battery eth wifi bluetooth sep mic volume brightness";
+          };
+          separator = "";
+          dim-value = "1.0";
+          tray-position = "none";
+          font = [ "JetBrainsMono Nerd Font:size=11;4" "feather:size=12;3" ];
+          enable-ipc = true;
+        };
+
+        settings = {
+          screenchange.reload = false;
+          compositing = {
+            background = "source";
+            foreground = "over";
+            overline = "over";
+            underline = "over";
+            border = "over";
+          };
+          pseudo-transparency = false;
+        };
+
+        "module/date" = {
+          type = "internal/date";
+          internal = 5;
+          date = "%a, %d %b %Y";
+          time = "%H:%M:%S";
+          label = "%date% at %time%";
+          format = {
+            text = "<label>";
+            prefix = {
+              text = " ";
+              foreground = ''''${colors.base0E}'';
             };
+          };
+        };
 
-            bar = {
-              fill = "⏽";
-              empty = "⏽";
-              indicator = "";
+        "module/xworkspaces" = {
+          type = "internal/xworkspaces";
+
+          label = {
+            active = {
+              text = "%name%";
+              background = ''''${colors.base01}'';
+              underline = ''''${colors.base0C}'';
+              padding = 1;
             };
-
-            "bar/main" = {
-              width = "100%";
-              height = "24pt";
-              radius = 0;
-              background = ''''${colors.transparent-base00}'';
-              foreground = ''''${colors.base07}'';
-              padding = 2;
-              line = {
-                size = 3;
-                color = ''''${colors.base00}'';
-              };
-              border.bottom = {
-                size = 0;
-                color = ''''${colors.base07}'';
-              };
-
-              module.margin = {
-                left = 1;
-                right = 1;
-              };  
-
-              modules = {
-                left = "xworkspaces sep cpu memory fs";
-                center = "player date";
-                right = "battery eth wifi bluetooth sep mic volume brightness";
-              };
-              separator = "";
-              dim-value = "1.0";
-              tray-position = "none";
-              font = ["JetBrainsMono Nerd Font:size=11;4" "feather:size=12;3"];
-              enable-ipc = true;
+            occupied = {
+              text = "%name%";
+              padding = 1;
             };
-
-            settings = {
-              screenchange.reload = false;
-              compositing = {
-                background = "source";
-                foreground = "over";
-                overline = "over";
-                underline = "over";
-                border = "over";
-              };
-              pseudo-transparency=false;
+            urgent = {
+              text = "%name%";
+              background = ''''${colors.base00}'';
+              underline = ''''${colors.base08}'';
+              padding = 1;
             };
-
-            "module/date" = {
-              type = "internal/date";
-              internal = 5;
-              date = "%a, %d %b %Y";
-              time = "%H:%M:%S";
-              label = "%date% at %time%";
-              format = {
-                text = "<label>";
-                prefix = {
-                  text = " ";
-                  foreground = ''''${colors.base0E}'';
-                };
-              };
+            empty = {
+              text = "%name%";
+              padding = 1;
             };
+          };
+        };
 
-            "module/xworkspaces" = {
-              type = "internal/xworkspaces";
-
-              label = {
-                active = {
-                  text = "%name%";
-                  background = ''''${colors.base01}'';
-                  underline = ''''${colors.base0C}'';
-                  padding = 1;
-                };
-                occupied = {
-                  text = "%name%";
-                  padding = 1;
-                };
-                urgent = {
-                  text = "%name%";
-                  background = ''''${colors.base00}''; 
-                  underline = ''''${colors.base08}'';
-                  padding = 1;
-                };
-                empty = {
-                  text = "%name%";
-                  padding = 1;
-                };
-              };
-            };
-            
-            "module/volume" = {
-              type = "internal/pulseaudio";
-              interval = 5; 
-              format = {
-                volume = "<ramp-volume> <bar-volume>";
-                muted = {
-                  text = "<label-muted>";
-                  prefix = {
-                    text = "";
-                    foreground = ''''${colors.base08}'';
-                  };
-                };
-              };
-
-              label = {
-                volume = "%percentage%%";
-                muted = {
-                    text = " Muted";
-                    foreground = ''''${colors.base03}'';
-                  };
-              };
-
-              ramp = {
-                volume = {
-                  text = ["" "" ""];
-                  foreground = ''''${colors.base0D}'';
-                };
-                headphones = [""];
-              };
-              
-              bar.volume = {
-                  format = "%fill%%indicator%%empty%";
-                  width = 11;
-                  gradient = false;
-                  foreground = [''''${colors.base0B}'' ''''${colors.base0B}'' ''''${colors.base09}'' ''''${colors.base09}'' ''''${colors.base08}''];
-
-                  indicator = {
-                    text = ''''${bar.indicator}'';
-                    foreground = ''''${colors.base07}'';
-                    font = 2;
-                  };
-
-                  fill = {
-                    text = ''''${bar.fill}'';
-                    font = 2;
-                  };
-
-                  empty = {
-                    text = ''''${bar.empty}'';
-                    font = 2;
-                    foreground = ''''${colors.base01}'';
-                  };
-              };
-            };
-
-            "module/fs" = {
-              type = "internal/fs";
-              interval = 30;
-              mount = ["/"];
-              fixed.values = true;
-
-              format = {
-                mounted = {
-                  text = "<label-mounted>";
-                  prefix = {
-                    text = "";
-                    foreground = ''''${colors.base0C}'';
-                  };
-                };
-
-                unmounted = {
-                  text = "<label-unmounted>";
-                  prefix = {
-                    text = "";
-                    foreground = ''''${colors.base08}'';
-                  };
-                };
-              };
-              label = {
-                mounted = " %free%";
-                unmounted = " %mountpoint%: NA";
-              };
-            };
-
-            "module/memory" = {
-              type = "internal/memory";
-              interval = 5;
-              format = {
-                text = "<label>";
-                prefix = {
-                  text = ""; 
-                  foreground = ''''${colors.base0D}'';
-                };
-              };
-              label = "%percentage_used:2%%";
-            };
-
-            "module/cpu" = {
-              type = "internal/cpu";
-              interval = 1;
-
-              format = {
-                text = "<label>";
-                prefix = {
-                  text = ""; 
-                  foreground = ''''${colors.base0A}'';
-                };
-              };
-
-              label = " %percentage%%";
-            };
-
-            "network-base" = {
-              type = "internal/network";
-              interval = 2;
-              format = {
-                connected = "<label-connected>";
-                disconnected = "<label-disconnected>";
-              };
-              label.disconnected = "";
-            };
-
-            "module/eth" = {
-              "inherit" = "network-base";
-              interface.type = "wired";
-              label.connected = {
-                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
-                foreground = ''''${colors.base0B}''; 
-              };
-              label.disconnected = {
-                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{A}";
-                foreground = ''''${colors.base03}''; 
-              };
-            };
-
-            "module/wifi" = {
-              "inherit" = "network-base";
-              interface.type = "wireless";
-              label.connected = {
-                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}  %essid% %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
-                foreground = ''''${colors.base0B}''; 
-              };
-              label.disconnected = {
-                text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}睊%{A}";
-                foreground = ''''${colors.base03}''; 
-              };
-            };
-
-            "module/bluetooth" = {
-              type = "custom/script";
-              exec = "/etc/profiles/per-user/jocelyn/bin/bluetooth";
-              interval = 2;
-              click-right = "/etc/profiles/per-user/jocelyn/bin/toggle_bluetooth";
-            };
-
-            "module/sep" = {
-              type = "custom/text";
-              content = {
-                text = "|";
-                foreground = ''''${colors.base03}'';
-              };
-            };
-
-            "module/mic" = {
-              type = "custom/script";
-              exec = "/etc/profiles/per-user/jocelyn/bin/mic --listen";
-              tail = true;
-              click-left = "/etc/profiles/per-user/jocelyn/bin/mic --toggle &";
-            };
-            
-            "module/player" = {
-              type = "custom/script";
-              interval = 3;
-              format.prefix = {
-                text = "阮 ";
-                foreground =''''${colors.base0B}''; 
-              };
-              exec = {
-                text = "${pkgs.playerctl}/bin/playerctl --player spotify metadata --format '{{artist}} - {{title}}  %{F#${config.colorScheme.colors.base03}}|%{F-}'";
-                "if" = ''[[ "$(${pkgs.playerctl}/bin/playerctl --player spotify status)" = "Playing" ]]'';
+        "module/volume" = {
+          type = "internal/pulseaudio";
+          interval = 1;
+          click-right = "${rofi-pulse}/bin/rofi-pulse sink";
+          format = {
+            volume = "<ramp-volume> <bar-volume>";
+            muted = {
+              text = "<label-muted>";
+              prefix = {
+                text = "";
+                foreground = ''''${colors.base08}'';
               };
             };
           };
+
+          label = {
+            volume = "%percentage%%";
+            muted = {
+              text = " Muted";
+              foreground = ''''${colors.base03}'';
+            };
+          };
+
+          ramp = {
+            volume = {
+              text = [ "" "" "" ];
+              foreground = ''''${colors.base0D}'';
+            };
+            headphones = [ "" ];
+          };
+
+          bar.volume = {
+            format = "%fill%%indicator%%empty%";
+            width = 11;
+            gradient = false;
+            foreground = [ ''''${colors.base0B}'' ''''${colors.base0B}'' ''''${colors.base09}'' ''''${colors.base09}'' ''''${colors.base08}'' ];
+
+            indicator = {
+              text = ''''${bar.indicator}'';
+              foreground = ''''${colors.base07}'';
+              font = 2;
+            };
+
+            fill = {
+              text = ''''${bar.fill}'';
+              font = 2;
+            };
+
+            empty = {
+              text = ''''${bar.empty}'';
+              font = 2;
+              foreground = ''''${colors.base01}'';
+            };
+          };
+        };
+
+        "module/fs" = {
+          type = "internal/fs";
+          interval = 30;
+          mount = [ "/" ];
+          fixed.values = true;
+
+          format = {
+            mounted = {
+              text = "<label-mounted>";
+              prefix = {
+                text = "";
+                foreground = ''''${colors.base0C}'';
+              };
+            };
+
+            unmounted = {
+              text = "<label-unmounted>";
+              prefix = {
+                text = "";
+                foreground = ''''${colors.base08}'';
+              };
+            };
+          };
+          label = {
+            mounted = " %free%";
+            unmounted = " %mountpoint%: NA";
+          };
+        };
+
+        "module/memory" = {
+          type = "internal/memory";
+          interval = 25;
+          format = {
+            text = "<label>";
+            prefix = {
+              text = "";
+              foreground = ''''${colors.base0D}'';
+            };
+          };
+          label = "%percentage_used:2%%";
+        };
+
+        "module/cpu" = {
+          type = "internal/cpu";
+          interval = 2;
+
+          format = {
+            text = "<label>";
+            prefix = {
+              text = "";
+              foreground = ''''${colors.base0A}'';
+            };
+          };
+
+          label = " %percentage%%";
+        };
+
+        "network-base" = {
+          type = "internal/network";
+          interval = 2;
+          format = {
+            connected = "<label-connected>";
+            disconnected = "<label-disconnected>";
+          };
+          label.disconnected = "";
+        };
+
+        "module/eth" = {
+          "inherit" = "network-base";
+          interface.type = "wired";
+          label.connected = {
+            text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
+            foreground = ''''${colors.base0B}'';
+          };
+          label.disconnected = {
+            text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{A}";
+            foreground = ''''${colors.base03}'';
+          };
+        };
+
+        "module/wifi" = {
+          "inherit" = "network-base";
+          interface.type = "wireless";
+          label.connected = {
+            text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}  %essid% %{F#${config.colorScheme.colors.base0C}} %downspeed%%{F-} %{F#${config.colorScheme.colors.base0D}}祝 %upspeed%%{F-}%{A}";
+            foreground = ''''${colors.base0B}'';
+          };
+          label.disconnected = {
+            text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}睊%{A}";
+            foreground = ''''${colors.base03}'';
+          };
+        };
+
+        "module/bluetooth" = {
+          type = "custom/script";
+          exec = "${bluetooth}/bin/bluetooth";
+          interval = 1;
+          click-left = "${toggle-bluetooth}/bin/toggle_bluetooth";
+          click-right = "${pkgs.blueberry}/bin/blueberry &";
+        };
+
+        "module/sep" = {
+          type = "custom/text";
+          content = {
+            text = "|";
+            foreground = ''''${colors.base03}'';
+          };
+        };
+
+        "module/mic" = {
+          type = "custom/script";
+          exec = "${mic}/bin/mic --listen";
+          tail = true;
+          click-left = "${mic}/bin/mic --toggle &";
+          click-right = "${rofi-pulse}/bin/rofi-pulse source";
+        };
+
+        "module/player" = {
+          type = "custom/script";
+          interval = 1;
+          format.prefix = {
+            text = "阮 ";
+            foreground = ''''${colors.base0B}'';
+          };
+          exec = {
+            text = "${pkgs.playerctl}/bin/playerctl --player spotify metadata --format '{{artist}} - {{title}}  %{F#${config.colorScheme.colors.base03}}|%{F-}'";
+            "if" = ''[[ "$(${pkgs.playerctl}/bin/playerctl --player spotify status)" = "Playing" ]]'';
+          };
+        };
+      };
       script = "polybar main &";
     };
     easyeffects = {
@@ -656,13 +683,13 @@ in
       inactiveOpacity = "1.0";
       backend = "glx";
       fade = false;
-      opacityRule = [ 
+      opacityRule = [
         "100:fullscreen"
         "100:name *= 'i3lock'"
         "85:class_g = 'Spotify'"
         "85:class_g *?= 'Rofi'"
       ];
-      
+
       shadow = true;
       shadowOpacity = "0.65";
       shadowExclude = [
@@ -913,11 +940,48 @@ in
   xdg.configFile."rofi/launcher.rasi".source = ./rofi/themes/launcher.rasi;
   xdg.configFile."rofi/networkmenu.rasi".source = ./rofi/themes/networkmenu.rasi;
   xdg.configFile."rofi/powermenu.rasi".source = ./rofi/themes/powermenu.rasi;
+  xdg.configFile."rofi/rbw.rasi".source = ./rofi/themes/rbw.rasi;
 
 
   programs = {
     home-manager.enable = true;
     fzf.enable = true;
+    rbw = {
+      enable = true;
+      settings = {
+        email = "jocelyn.thode@gmail.com";
+        lock_timeout = 1800;
+        pinentry = "gnome3";
+      };
+    };
+    firefox = {
+      enable = true;
+      extensions = with config.nur.repos.rycee.firefox-addons; [
+        tree-style-tab
+        ublock-origin
+        https-everywhere
+        videospeed
+        greasemonkey
+        don-t-fuck-with-paste
+        betterttv
+        multi-account-containers
+      ];
+      profiles.jocelyn = {
+        bookmarks = { };
+        settings = {
+          "browser.startup.homepage" = "about:blank";
+          "extensions.pocket.enabled" = false;
+          "privacy.trackingprotection.enabled" = true;
+          "dom.security.https_only_mode" = true;
+          "browser.search.region" = "CH";
+          "media.eme.enabled" = true;
+          "general.useragent.locale" = "fr-CH";
+          "browser.shell.checkDefaultBrowser" = true;
+          "browser.shell.defaultBrowserCheckCount" = 1;
+          "browser.bookmarks.showMobileBookmarks" = true;
+        };
+      };
+    };
     rofi = {
       enable = true;
       font = "JetBrainsMono Nerd Font 12";
@@ -927,7 +991,7 @@ in
     bat = {
       enable = true;
       config = {
-        theme = "gruvbox-dark"; 
+        theme = "gruvbox-dark";
       };
     };
     git = {
@@ -1011,20 +1075,20 @@ in
       enable = true;
       font.name = "JetBrainsMono Nerd Font Mono";
       settings = {
-        background_opacity  = "0.90";
+        background_opacity = "0.90";
 
-        tab_bar_style  = "custom";
-        tab_separator  = "\" ▎\"";
-        tab_fade  = "0 0 0 0";
-        tab_title_template  = "\"{fmt.fg._415c6d}{fmt.bg.default} ○ {index}:{f'{title[:6]}…{title[-6:]}' if title.rindex(title[-1]) + 1 > 13 else title}{' []' if layout_name == 'stack' else ''} \"";
-        active_tab_title_template  = "\"{fmt.fg._83b6af}{fmt.bg.default} 綠{index}:{f'{title[:6]}…{title[-6:]}' if title.rindex(title[-1]) + 1 > 13 else title}{' []' if layout_name == 'stack' else ''} \"";
-        tab_activity_symbol  = "none";
-        tab_bar_edge  = "top";
-        tab_bar_margin_height  = "0.0 0.0";
-        active_tab_font_style  = "bold-italic";
-        inactive_tab_font_style  = "normal";
-        tab_bar_min_tabs  = "2";
-        bell_on_tab  = "no";
+        tab_bar_style = "custom";
+        tab_separator = "\" ▎\"";
+        tab_fade = "0 0 0 0";
+        tab_title_template = "\"{fmt.fg._415c6d}{fmt.bg.default} ○ {index}:{f'{title[:6]}…{title[-6:]}' if title.rindex(title[-1]) + 1 > 13 else title}{' []' if layout_name == 'stack' else ''} \"";
+        active_tab_title_template = "\"{fmt.fg._83b6af}{fmt.bg.default} 綠{index}:{f'{title[:6]}…{title[-6:]}' if title.rindex(title[-1]) + 1 > 13 else title}{' []' if layout_name == 'stack' else ''} \"";
+        tab_activity_symbol = "none";
+        tab_bar_edge = "top";
+        tab_bar_margin_height = "0.0 0.0";
+        active_tab_font_style = "bold-italic";
+        inactive_tab_font_style = "normal";
+        tab_bar_min_tabs = "2";
+        bell_on_tab = "no";
 
         foreground = "#${config.colorScheme.colors.base05}";
         background = "#${config.colorScheme.colors.base00}";
@@ -1064,8 +1128,11 @@ in
       vimAlias = true;
       extraPackages = with pkgs; [
         rnix-lsp
+        shellcheck
+        pyright
+        gopls
+        sumneko-lua-language-server
       ];
-
     };
     autorandr = {
       enable = true;
@@ -1103,11 +1170,12 @@ in
           };
         };
       };
-    };     
+    };
     fish = {
       enable = true;
       shellAliases = {
         cat = "bat";
+        ls = "exa -lg";
         find = "fd";
         keti = "kubectl exec -ti";
       };
@@ -1119,12 +1187,9 @@ in
       shellInit = ''
         set -U fish_greeting
         set -gx fish_key_bindings fish_user_key_bindings
-
-   
-        if test -z (pgrep ssh-agent | string collect)
-          eval (ssh-agent -c)
-          set -Ux SSH_ASKPASS "/usr/bin/ksshaskpass"
-        end
+      '';
+      interactiveShellInit = ''
+        any-nix-shell fish | source
       '';
       functions = {
         fish_user_key_bindings = {
@@ -1144,7 +1209,7 @@ in
             sha256 = "14bdvrnd1v8ffac6fmpfs2cy4q19a4w02yrkc2xjiyqhj9lazgzy";
           };
         }
-        { 
+        {
           name = "fzf-fish";
           src = pkgs.fishPlugins.fzf-fish.src;
         }

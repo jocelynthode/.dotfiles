@@ -17,30 +17,31 @@ let
   system = "x86_64-linux";                             	    # System architecture
 
   pkgs = import nixpkgs {
-    inherit system;
-    config.allowUnfree = true;                              # Allow proprietary software
+    inherit system nur;
+    config.allowUnfree = true; # Allow proprietary software
   };
 
   lib = nixpkgs.lib;
 in
 {
-  archfixe = lib.nixosSystem {                               # Desktop profile
+  archfixe = lib.nixosSystem {
+    # Desktop profile
     inherit system;
-    specialArgs = { inherit inputs user location nix-colors; };        # Pass flake variable
-    modules = [                                             # Modules that are used.
+    specialArgs = { inherit inputs user location nix-colors nur; }; # Pass flake variable
+    modules = [
+      # Modules that are used.
       home-manager.nixosModules.home-manager
-      nur.nixosModules.nur
       ./archfixe
       ./configuration.nix
 
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-    
-        home-manager.extraSpecialArgs = { inherit user nix-colors; };  # Pass flake variable
+
+        home-manager.extraSpecialArgs = { inherit user nix-colors nur; }; # Pass flake variable
 
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)];
+          imports = [ (import ./home.nix) ];
         };
       }
     ];

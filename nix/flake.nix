@@ -10,29 +10,30 @@
     };
 
     nur = {
-      url = "github:nix-community/NUR";                                   # NUR packages
+      url = "github:nix-community/NUR"; # NUR packages
     };
 
-    nixgl = {                                                             #OpenGL 
+    nixgl = {
+      #OpenGL 
       url = "github:guibou/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-colors = {
-    	# url = "github:misterio77/nix-colors";
-    	url = "github:djacu/nix-colors/feature/add-conversion-functions";
+      url = "github:misterio77/nix-colors";
     };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nur, nixgl, nix-colors, ... }:
-  let
-  	user = "jocelyn";
-    location = "$HOME/.setup";
-  in {
-    nixosConfigurations = (
-      import ./hosts {
-        inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager nur nix-colors user location;
-      }
-    );
-  }; 
+    let
+      user = "jocelyn";
+      location = "$HOME/.setup";
+    in
+    {
+      nixosConfigurations = (
+        import ./hosts {
+          inherit (nixpkgs) lib;
+          inherit inputs nixpkgs home-manager nur nix-colors user location;
+        }
+      );
+    };
 }
