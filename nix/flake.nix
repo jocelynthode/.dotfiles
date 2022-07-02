@@ -9,31 +9,58 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nur = {
-      url = "github:nix-community/NUR"; # NUR packages
-    };
-
-    nixgl = {
-      #OpenGL 
-      url = "github:guibou/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-colors = {
-      url = "github:misterio77/nix-colors";
-    };
+    flake-utils.url = "github:numtide/flake-utils";
+    nur.url = "github:nix-community/NUR";
+    nix-colors.url = "github:misterio77/nix-colors";
+    hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nur, nixgl, nix-colors, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nur, nix-colors, flake-utils, hardware, ... }:
     let
-      user = "jocelyn";
-      location = "$HOME/.setup";
+      inherit (builtins) attrValues mapAttrs;
+      inherit (nixpkgs.lib) genAttrs systems nixosSystem;
+      forAllSystems = genAttrs systems.flakeExposed;
+      system = "x86_64-linux";                             	    # System architecture
     in
-    {
-      nixosConfigurations = (
-        import ./hosts {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager nur nix-colors user location;
+    rec {
+      overlays = {
+        default = import ./overlay { inherit inputs; };
+        nur = nur.overlay;
+      };
+
+      packages = forAllSystems (system:
+        import nixpkgs {
+          inherit system;
+          overlays = attrValues overlays;
+          config.allowUnfree = true;
         }
       );
+
+      nixosConfigurations = {
+        archfixe = nixosSystem {
+          inherit system;
+          pkgs = packages.${system};
+          specialArgs = {
+            inherit inputs system home-manager nix-colors;
+          };
+          modules = [
+            ./hosts/archfixe
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.extraSpecialArgs = { inherit inputs nix-colors; }; # Pass flake variable
+
+              home-manager.users.jocelyn = {
+                imports = [ 
+                  ./home/jocelyn 
+                ];
+              };
+            }
+
+          ];
+        };
+      };
     };
 }

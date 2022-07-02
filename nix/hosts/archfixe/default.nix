@@ -1,58 +1,57 @@
-#
-#  Specific system configuration settings for desktop
-#
-#  flake.nix
-#   ├─ ./hosts
-#   │   └─ ./desktop
-#   │        ├─ default.nix *
-#   │        └─ hardware-configuration.nix
-#   └─ ./modules
-#       ├─ ./desktop
-#       │   ├─ ./bspwm
-#       │   │   └─ bspwm.nix
-#       │   └─ ./virtualisation
-#       │       └─ default.nix
-#       ├─ ./programs
-#       │   └─ games.nix
-#       ├─ ./services
-#       │   └─ default.nix
-#       └─ ./hardware
-#           └─ default.nix
-#
+{ pkgs, inputs, config, ... }: {
+  imports = [
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-pc-ssd
 
-{ pkgs, lib, user, nix-colors, ... }:
+    ./hardware-configuration.nix
+    ../common/global
+    ../common/optional/gnome-keyring.nix
+    ../common/optional/pipewire.nix
+    ../common/optional/podman.nix
+    ../common/optional/steam.nix
+    ../common/optional/xserver.nix
+  ];
 
-{
-  imports = # For now, if applying to other system, swap files
-    [ (import ./hardware-configuration.nix) ]; # Current system hardware config @ /etc/nixos/hardware-configuration.nix
+  networking = {
+    networkmanager.enable = true;
+    wireguard.enable = true;
+  };
 
-  boot.initrd.kernelModules = [ "nvidia" ]; # Video drivers
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
+  programs = {
+    gamemode = {
+      enable = true;
+    };
+    ssh = {
+      startAgent = true;
+      askPassword = "";
+    };
+    dconf.enable = true;
+    kdeconnect.enable = true;
+  };
 
-  hardware.sane = {
-    # Used for scanning with Xsane
+  services.dbus.packages = [ pkgs.gcr ];
+
+  xdg.portal = {
     enable = true;
-    extraBackends = [ pkgs.sane-airscan ];
+    gtkUsePortal = true;
   };
 
-  environment = {
-    # Packages installed system wide
-    systemPackages = with pkgs; [
-      # This is because some options need to be configured.
-      discord
-      simple-scan
-    ];
+  hardware = {
+    bluetooth.enable = true;
+    logitech.wireless.enable = true;
   };
 
-  services = {
-    xserver = {
-      # In case, multi monitor support
-      videoDrivers = [
-        # Video Settings
-        "nvidia"
-      ];
+  sound = {
+    enable = true;
+    mediaKeys = {
+      enable = true;
     };
   };
 
+  system.stateVersion = "22.11";
 }
 
