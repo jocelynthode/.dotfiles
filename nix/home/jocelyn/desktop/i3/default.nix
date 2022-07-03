@@ -25,6 +25,10 @@
     in
     {
       enable = true;
+      # Without this gnome-keyring does not work
+      profileExtra = ''
+        ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+      '';
       windowManager.i3 = {
         enable = true;
         config = {
