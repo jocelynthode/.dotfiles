@@ -1,4 +1,4 @@
-{ config, pkgs,... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.colorscheme) colors;
@@ -8,6 +8,7 @@ let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   networkmanager_dmenu = "${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu";
   blueberry = "${pkgs.blueberry}/bin/blueberry";
+  rofi-pulse = "${pkgs.rofi-pulse}/bin/rofi-pulse";
   home-pkgs = (import ../../../pkgs { inherit pkgs config; });
 in
 {
@@ -130,7 +131,7 @@ in
       "module/volume" = {
         type = "internal/pulseaudio";
         interval = 1;
-        click-right = "${pkgs.rofi-pulse}/bin/rofi-pulse sink";
+        click-right = "${rofi-pulse} sink";
         format = {
           volume = "<ramp-volume> <bar-volume>";
           muted = {
@@ -254,11 +255,11 @@ in
         "inherit" = "network-base";
         interface.type = "wired";
         label.connected = {
-          text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{F#${colors.base0C}} %downspeed%%{F-} %{F#${colors.base0D}}祝 %upspeed%%{F-}%{A}";
+          text = "%{A1:${networkmanager_dmenu} &:} %{F#${colors.base0C}} %downspeed%%{F-} %{F#${colors.base0D}}祝 %upspeed%%{F-}%{A}";
           foreground = ''''${colors.base0B}'';
         };
         label.disconnected = {
-          text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:} %{A}";
+          text = "%{A1:${networkmanager_dmenu} &:} %{A}";
           foreground = ''''${colors.base03}'';
         };
       };
@@ -267,11 +268,11 @@ in
         "inherit" = "network-base";
         interface.type = "wireless";
         label.connected = {
-          text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}  %essid% %{F#${colors.base0C}} %downspeed%%{F-} %{F#${colors.base0D}}祝 %upspeed%%{F-}%{A}";
+          text = "%{A1:${networkmanager_dmenu} &:}  %essid% %{F#${colors.base0C}} %downspeed%%{F-} %{F#${colors.base0D}}祝 %upspeed%%{F-}%{A}";
           foreground = ''''${colors.base0B}'';
         };
         label.disconnected = {
-          text = "%{A1:${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu &:}睊%{A}";
+          text = "%{A1:${networkmanager_dmenu} &:}睊%{A}";
           foreground = ''''${colors.base03}'';
         };
       };
@@ -281,7 +282,7 @@ in
         exec = "${home-pkgs.polybar-bluetooth}/bin/polybar-bluetooth";
         interval = 1;
         click-left = "${pkgs.toggle-bluetooth}/bin/toggle_bluetooth";
-        click-right = "${pkgs.blueberry}/bin/blueberry &";
+        click-right = "${blueberry} &";
       };
 
       "module/sep" = {
@@ -297,7 +298,7 @@ in
         exec = "${home-pkgs.polybar-mic}/bin/polybar-mic --listen";
         tail = true;
         click-left = "${home-pkgs.polybar-mic}/bin/polybar-mic --toggle &";
-        click-right = "${pkgs.rofi-pulse}/bin/rofi-pulse source";
+        click-right = "${rofi-pulse} source";
       };
 
       "module/player" = {
@@ -308,8 +309,8 @@ in
           foreground = ''''${colors.base0B}'';
         };
         exec = {
-          text = "${pkgs.playerctl}/bin/playerctl --player spotify metadata --format '{{artist}} - {{title}}  %{F#${colors.base03}}|%{F-}'";
-          "if" = ''[[ "$(${pkgs.playerctl}/bin/playerctl --player spotify status)" = "Playing" ]]'';
+          text = "${playerctl} --player spotify metadata --format '{{artist}} - {{title}}  %{F#${colors.base03}}|%{F-}'";
+          "if" = ''[[ "$(${playerctl} --player spotify status)" = "Playing" ]]'';
         };
       };
     };

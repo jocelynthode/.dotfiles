@@ -1,6 +1,5 @@
 { pkgs, config, lib, home-manager, ... }: {
 
-
   users.users.jocelyn = {
     isNormalUser = true;
     shell = pkgs.fish;

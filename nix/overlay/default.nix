@@ -15,6 +15,15 @@ in
     patches = (oldAttrs.patches or [ ]) ++ [ ./nm-applet-no-autostart.patch ];
   });
 
+  # Add notify-send to networkmanager package path
+  networkmanager_dmenu = prev.networkmanager_dmenu.overrideAttrs (oldAttrs: rec {
+    propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ]) ++ [ prev.pkgs.libnotify ];
+  });
+
+  vimPlugins = prev.vimPlugins // {
+    taxi-vim = prev.pkgs.callPackage ../pkgs/vimPlugins/taxi-vim { }; 
+  };
+
   generated-gtk-themes = mapAttrs (_: scheme: gtkThemeFromScheme { inherit scheme; }) colorSchemes;
 
 } // import ../pkgs { pkgs = prev; }

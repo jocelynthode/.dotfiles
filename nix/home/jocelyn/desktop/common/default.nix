@@ -6,8 +6,10 @@
     ./dragon.nix
     ./easyeffects
     ./firefox.nix
+    ./gammastep.nix
     ./gtk.nix
     ./kdeconnect.nix
+    ./kitty
     ./mpv.nix
     ./mumble.nix
     ./pavucontrol.nix
@@ -29,5 +31,6 @@
   };
   home.packages = with pkgs; [
     xdg-utils
+    networkmanagerapplet
   ];
 }
