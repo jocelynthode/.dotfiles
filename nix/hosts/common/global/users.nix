@@ -1,4 +1,6 @@
 { pkgs, config, lib, home-manager, ... }: {
+
+
   users.users.jocelyn = {
     isNormalUser = true;
     shell = pkgs.fish;
@@ -16,4 +18,12 @@
   };
 
   services.geoclue2.enable = true;
+
+
+  home-manager.users.jocelyn = {
+    imports = [
+      ../../../home/jocelyn
+    ];
+  };
+
 }

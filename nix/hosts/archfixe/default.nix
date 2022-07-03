@@ -1,7 +1,8 @@
-{ pkgs, inputs, config, ... }: {
+{ pkgs, inputs, config, nix-colors, lollypops, hostname, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
+    inputs.home-manager.nixosModule
 
     ./hardware-configuration.nix
     ../common/global
@@ -25,10 +26,6 @@
     gamemode = {
       enable = true;
     };
-    ssh = {
-      startAgent = true;
-      askPassword = "";
-    };
     dconf.enable = true;
     kdeconnect.enable = true;
   };
@@ -37,7 +34,6 @@
 
   xdg.portal = {
     enable = true;
-    gtkUsePortal = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
     ];
@@ -54,6 +50,16 @@
       enable = true;
     };
   };
+
+  lollypops.deployment.local-evaluation = true;
+  lollypops.deployment.config-dir = "/etc/nixos";
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs nix-colors; }; # Pass flake variable
+  };
+
 
   system.stateVersion = "22.11";
 }

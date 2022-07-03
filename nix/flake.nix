@@ -13,23 +13,27 @@
     nur.url = "github:nix-community/NUR";
     nix-colors.url = "github:misterio77/nix-colors";
     hardware.url = "github:nixos/nixos-hardware";
+    lollypops.url = "github:pinpox/lollypops";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nur, nix-colors, flake-utils, hardware, ... }:
+  outputs = inputs:
     let
-      inherit (builtins) attrValues mapAttrs;
-      inherit (nixpkgs.lib) genAttrs systems nixosSystem;
+      my-lib = import ./lib { inherit inputs; };
+      inherit (builtins) attrValues;
+      inherit (inputs.nixpkgs.lib) genAttrs systems;
+      inherit (my-lib) mkSystem;
+      inherit (inputs) lollypops;
       forAllSystems = genAttrs systems.flakeExposed;
       system = "x86_64-linux";                             	    # System architecture
     in
     rec {
       overlays = {
         default = import ./overlay { inherit inputs; };
-        nur = nur.overlay;
+        nur = inputs.nur.overlay;
       };
 
       packages = forAllSystems (system:
-        import nixpkgs {
+        import inputs.nixpkgs {
           inherit system;
           overlays = attrValues overlays;
           config.allowUnfree = true;
@@ -37,30 +41,11 @@
       );
 
       nixosConfigurations = {
-        archfixe = nixosSystem {
-          inherit system;
-          pkgs = packages.${system};
-          specialArgs = {
-            inherit inputs system home-manager nix-colors;
-          };
-          modules = [
-            ./hosts/archfixe
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.extraSpecialArgs = { inherit inputs nix-colors; }; # Pass flake variable
-
-              home-manager.users.jocelyn = {
-                imports = [ 
-                  ./home/jocelyn 
-                ];
-              };
-            }
-
-          ];
+        archfixe = mkSystem {
+          inherit packages system;
+          hostname = "archfixe";
         };
       };
+      apps.${system}.default = lollypops.apps.${system}.default { configFlake = inputs.self; };
     };
 }

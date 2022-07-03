@@ -1,5 +1,5 @@
 # This file (and the global directory) holds config that i use on all hosts
-{ lib, inputs, ... }:
+{ lib, inputs, hostname, ... }:
 {
   imports = [
     ./environment.nix
@@ -11,7 +11,7 @@
     ./users.nix
   ];
 
-  networking.hostName = "archfixe";
+  networking.hostName = hostname;
   # See https://github.com/NixOS/nixpkgs/commit/15d761a525a025de0680b62e8ab79a9d183f313d 
   systemd.targets.network-online.wantedBy = lib.mkForce [ ]; # Normally ["multi-user.target"]
   systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [ ]; # Normally ["network-online.target"]

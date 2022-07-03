@@ -6,7 +6,6 @@
     ./dragon.nix
     ./easyeffects
     ./firefox.nix
-    ./gnome-keyring.nix
     ./gtk.nix
     ./kdeconnect.nix
     ./mpv.nix

@@ -1,10 +1,5 @@
-{ pkgs, config, inputs, lib, home-manager, nix-colors, ... }:
+{ pkgs, config, inputs, lib, home-manager, nix-colors, ... }: {
 
-let
-  inherit (lib) optional mkIf;
-  inherit (builtins) map pathExists filter;
-in
-{
   imports = [
     ./cli
     ./rice
