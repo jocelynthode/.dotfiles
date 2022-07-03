@@ -41,9 +41,9 @@
       );
 
       nixosConfigurations = {
-        archfixe = mkSystem {
+        desktek = mkSystem {
           inherit packages system;
-          hostname = "archfixe";
+          hostname = "desktek";
         };
       };
       apps.${system}.default = lollypops.apps.${system}.default { configFlake = inputs.self; };
