@@ -77,7 +77,7 @@ in
         tray = {
           position = "right";
         };
-        font = [ "JetBrainsMono Nerd Font:size=11;4" "feather:size=12;3" ];
+        font = [ "${config.fontProfiles.monospace.family}:size=11;4" "feather:size=12;3" ];
         enable-ipc = true;
       };
 

@@ -1,1 +1,3 @@
-{ pkgs }: { } // (import ./pkgs { inherit pkgs; })
+{ pkgs }: {
+  homeManagerModules = import ./modules/home-manager;
+} // (import ./pkgs { inherit pkgs; })

@@ -41,7 +41,7 @@ in
         --activity-card-background: var(--background-secondary);
     }
     body {
-        font-family: NotoSans Nerd Font, sans serif;
+        font-family: ${config.fontProfiles.regular.family}, sans serif;
     }
     .scroller-1Bvpku {
         background-color: var(--background-primary);

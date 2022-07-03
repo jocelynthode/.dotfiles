@@ -20,7 +20,7 @@
 
 
   home-manager.users.jocelyn = {
-    imports = [
+    imports = builtins.attrValues (import ../../../modules/home-manager) ++ [
       ../../../home/jocelyn
     ];
   };

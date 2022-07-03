@@ -8,7 +8,7 @@
 
   programs.rofi = {
     enable = true;
-    font = "JetBrainsMono Nerd Font 11";
+    font = "${config.fontProfiles.monospace.family} 11";
     terminal = "${pkgs.kitty}/bin/kitty";
     location = "center";
   };

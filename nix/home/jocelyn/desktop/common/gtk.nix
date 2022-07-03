@@ -7,7 +7,8 @@ rec {
   gtk = {
     enable = true;
     font = {
-      name = "NotoSans Nerd Font";
+      name = config.fontProfiles.regular.family;
+      package = config.fontProfiles.regular.package; 
       size = 11;
     };
     theme = {

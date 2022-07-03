@@ -6,6 +6,7 @@
     ./dragon.nix
     ./easyeffects
     ./firefox.nix
+    ./font.nix
     ./gammastep.nix
     ./gtk.nix
     ./kdeconnect.nix

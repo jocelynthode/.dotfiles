@@ -15,7 +15,7 @@ in
       global = {
         monitor = 0;
         geometry = "0x0-50+65";
-        font = "JetBrains Mono Nerd Font 10";
+        font = "${config.fontProfiles.monospace.family} 10";
         line_height = 4;
         frame_width = 2;
         padding = 16;

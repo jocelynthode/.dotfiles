@@ -21,7 +21,7 @@
       my-lib = import ./lib { inherit inputs; };
       inherit (builtins) attrValues;
       inherit (inputs.nixpkgs.lib) genAttrs systems;
-      inherit (my-lib) mkSystem;
+      inherit (my-lib) mkSystem importAttrset;
       inherit (inputs) lollypops;
       forAllSystems = genAttrs systems.flakeExposed;
       system = "x86_64-linux";                             	    # System architecture
@@ -39,6 +39,8 @@
           config.allowUnfree = true;
         }
       );
+
+      homeManagerModules = importAttrset ./modules/home-manager;
 
       nixosConfigurations = {
         desktek = mkSystem {

@@ -16,7 +16,7 @@ in
 
   programs.kitty = {
     enable = true;
-    font.name = "JetBrains Mono Nerd Font";
+    font.name = config.fontProfiles.monospace.family;
     settings = {
       background_opacity = "0.90";
       allow_remote_control = "yes";
