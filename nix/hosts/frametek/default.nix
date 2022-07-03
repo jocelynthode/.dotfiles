@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, nix-colors, lollypops, hostname, ... }: {
+{ pkgs, inputs, config, nix-colors, hostname, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-gpu-intel
@@ -50,9 +50,6 @@
       enable = true;
     };
   };
-
-  lollypops.deployment.local-evaluation = true;
-  lollypops.deployment.config-dir = "/etc/nixos";
 
   home-manager = {
     useGlobalPkgs = true;

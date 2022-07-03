@@ -13,7 +13,6 @@
     nur.url = "github:nix-community/NUR";
     nix-colors.url = "github:misterio77/nix-colors";
     hardware.url = "github:nixos/nixos-hardware";
-    lollypops.url = "github:pinpox/lollypops";
   };
 
   outputs = inputs:
@@ -22,7 +21,6 @@
       inherit (builtins) attrValues;
       inherit (inputs.nixpkgs.lib) genAttrs systems;
       inherit (my-lib) mkSystem importAttrset;
-      inherit (inputs) lollypops;
       forAllSystems = genAttrs systems.flakeExposed;
       system = "x86_64-linux";                             	    # System architecture
     in
@@ -48,6 +46,5 @@
           hostname = "desktek";
         };
       };
-      apps.${system}.default = lollypops.apps.${system}.default { configFlake = inputs.self; };
     };
 }

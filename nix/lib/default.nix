@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   inherit (builtins) mapAttrs;
-  inherit (inputs) self nixpkgs lollypops;
+  inherit (inputs) self nixpkgs;
   inherit (nixpkgs.lib) nixosSystem;
 
   mylib = {
@@ -19,7 +19,6 @@ let
           inherit mylib inputs system hostname;
         };
         modules = [
-          lollypops.nixosModules.lollypops
           ../hosts/${hostname}
         ];
       };
