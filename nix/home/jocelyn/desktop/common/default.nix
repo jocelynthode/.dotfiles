@@ -17,6 +17,7 @@
     ./qt.nix
     ./screenshot.nix
     ./signal.nix
+    ./simplescan.nix
     ./slack.nix
     ./solaar.nix
     ./spotify.nix

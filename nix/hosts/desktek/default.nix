@@ -9,6 +9,7 @@
     ../common/optional/gnome-keyring.nix
     ../common/optional/pipewire.nix
     ../common/optional/podman.nix
+    ../common/optional/scanner.nix
     ../common/optional/steam.nix
     ../common/optional/xserver.nix
   ];
