@@ -4,4 +4,12 @@
     dockerCompat = true;
     dockerSocket.enable = true;
   };
+
+  environment.persistence = {
+    "/persist" = {
+      directories = [
+        "/var/lib/docker"
+      ];
+    };
+  };
 }

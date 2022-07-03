@@ -10,6 +10,8 @@
     systemPackages = with pkgs; [
       git
       killall
+      bat
+      neovim
       wget
       curl
       fzf

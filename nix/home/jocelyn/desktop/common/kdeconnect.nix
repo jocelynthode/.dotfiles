@@ -1,4 +1,4 @@
-{ pkgs, lib, persistence, ... }:
+{ pkgs, lib, ... }:
 
 let
   kdeconnect-cli = "${pkgs.kdeconnect}/bin/kdeconnect-cli";

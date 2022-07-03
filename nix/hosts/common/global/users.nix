@@ -1,9 +1,10 @@
 { pkgs, config, lib, home-manager, ... }: {
 
+  users.mutableUsers = false;
   users.users.jocelyn = {
     isNormalUser = true;
     shell = pkgs.fish;
-    initialPassword = "nixos";
+    hashedPassword = "$6$NJJ.620jUk.rcc5K$HqgPT6id5YmxIUBttuXsZjetVcdzAQywlqlwxNfcq0ZE/igh1bYvADLOaviKdW5ly.GASPubSm1KlpSztDJFl/";
     extraGroups = [
       "wheel"
       "video"
@@ -19,10 +20,15 @@
   services.geoclue2.enable = true;
 
 
-  home-manager.users.jocelyn = {
-    imports = builtins.attrValues (import ../../../modules/home-manager) ++ [
-      ../../../home/jocelyn
-    ];
-  };
+  home-manager.users = {
+    jocelyn = {
+      imports = builtins.attrValues (import ../../../modules/home-manager) ++ [
+        ../../../home/jocelyn
+      ];
+    };
+    # root = {
+    #   imports = [ ../../../home/root ];
+    # };
 
+  };
 }

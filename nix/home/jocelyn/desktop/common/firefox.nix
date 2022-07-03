@@ -1,4 +1,4 @@
-{ pkgs, lib, persistence, ... }:
+{ pkgs, lib, ... }:
 
 let
   addons = pkgs.nur.repos.rycee.firefox-addons;

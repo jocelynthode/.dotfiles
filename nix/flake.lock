@@ -67,6 +67,21 @@
         "type": "github"
       }
     },
+    "impermanence": {
+      "locked": {
+        "lastModified": 1646131459,
+        "narHash": "sha256-GPmgxvUFvQ1GmsGfWHy9+rcxWrczeDhS9XnAIPHi9XQ=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "2f39baeb7d039fda5fc8225111bb79474138e6f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "type": "github"
+      }
+    },
     "nix-colors": {
       "inputs": {
         "base16-schemes": "base16-schemes"
@@ -103,11 +118,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1656835264,
-        "narHash": "sha256-sCHGbrrxvJ6US7JJLRhFtH7ai7gOorw8Qq1P8R+AJnU=",
+        "lastModified": 1656857635,
+        "narHash": "sha256-NvmB0oiSaAXdH/Ak9KGVUujUloM41E5V/LLus6H1zmo=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "3574ef870a60a93ee4e2aebec4039572fb36361d",
+        "rev": "bfa0d2a67c7812865620cf236714086d44912d22",
         "type": "github"
       },
       "original": {
@@ -121,6 +136,7 @@
         "flake-utils": "flake-utils",
         "hardware": "hardware",
         "home-manager": "home-manager",
+        "impermanence": "impermanence",
         "nix-colors": "nix-colors",
         "nixpkgs": "nixpkgs",
         "nur": "nur"
