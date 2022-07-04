@@ -1,10 +1,8 @@
 { pkgs, config, inputs, lib, home-manager, nix-colors, ... }: {
 
   imports = [
-    ../jocelyn/rice
-    ../jocelyn/cli/nvim
-    ../jocelyn/cli/bat.nix
-    ../jocelyn/cli/fish.nix
+    ../common/rice
+    ../common/cli
   ];
 
   systemd.user.startServices = "sd-switch";
@@ -14,7 +12,7 @@
 
   home = {
     username = "root";
-    stateVersion = "22.11";
     homeDirectory = "/root";
+    stateVersion = "22.11";
   };
 } 

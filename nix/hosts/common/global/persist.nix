@@ -54,6 +54,12 @@
         ".dotfiles"
       ];
     };
+    users.root = {
+      home = "/root";
+      directories = [
+        ".config/fish"
+      ];
+    };
   };
 
 }

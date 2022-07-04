@@ -1,8 +1,10 @@
 { pkgs, config, inputs, lib, home-manager, nix-colors, ... }: {
 
   imports = [
+    ../common/rice
+    ../common/cli
+
     ./cli
-    ./rice
     ./desktop/i3
   ];
 
