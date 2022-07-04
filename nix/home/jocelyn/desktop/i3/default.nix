@@ -107,7 +107,7 @@
               { class = "Solaar"; }
               { class = "org.remmina.Remmina"; }
               { class = "Nm-connection-editor"; }
-              { class = "Pavucontrol"; }
+              { class = "pavucontrol-qt"; }
             ];
           };
 

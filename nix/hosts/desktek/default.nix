@@ -62,13 +62,11 @@
         ".config/Slack"
         ".config/spotify"
         ".config/kdeconnect"
+        ".config/pavucontrol-qt"
         ".cache/betterlockscreen"
 
         # TODO remove
         ".dotfiles"
-      ];
-      files = [
-        ".config/pavucontrol.ini"
       ];
     };
   };
