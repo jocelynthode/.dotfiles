@@ -26,10 +26,6 @@ rec {
     shellInit = ''
       set -U fish_greeting
       set -gx fish_key_bindings fish_user_key_bindings
-   
-      if test -z (pgrep ssh-agent | string collect)
-        eval (ssh-agent -c) &> /dev/null
-      end
     '';
     interactiveShellInit = ''
       any-nix-shell fish | source
