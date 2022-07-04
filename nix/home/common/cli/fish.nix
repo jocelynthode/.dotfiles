@@ -39,37 +39,10 @@ rec {
       };
     };
     plugins = [
-      {
-        name = "tide";
-        src = pkgs.fetchFromGitHub {
-          owner = "IlanCosman";
-          repo = "tide";
-          rev = "main";
-          sha256 = "sha256-6ys1SEfcWO0cRRNawrpnUU9tPJVVZ0E6RcPmrE9qG5g=";
-        };
-      }
-      {
-        name = "fzf-fish";
-        src = pkgs.fishPlugins.fzf-fish.src;
-      }
-      {
-        name = "colored_man_pages";
-        src = pkgs.fetchFromGitHub {
-          owner = "patrickf1";
-          repo = "colored_man_pages.fish";
-          rev = "f885c2507128b70d6c41b043070a8f399988bc7a";
-          sha256 = "0ifqdbaw09hd1ai0ykhxl8735fcsm0x2fwfzsk7my2z52ds60bwa";
-        };
-      }
-      {
-        name = "autopair";
-        src = pkgs.fetchFromGitHub {
-          owner = "jorgebucaran";
-          repo = "autopair.fish";
-          rev = "1.0.3";
-          sha256 = "0lxfy17r087q1lhaz5rivnklb74ky448llniagkz8fy393d8k9cp";
-        };
-      }
+      { name = "tide"; src = pkgs.fishPlugins.tide.src; }
+      { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
+      { name = "colored_man_pages"; src = pkgs.fishPlugins.colored_man_pages.src; }
+      { name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
     ];
   };
 

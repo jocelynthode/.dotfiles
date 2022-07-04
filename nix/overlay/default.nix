@@ -21,7 +21,13 @@ in
   });
 
   vimPlugins = prev.vimPlugins // {
-    taxi-vim = prev.pkgs.callPackage ../pkgs/vimPlugins/taxi-vim { };
+    taxi-vim = prev.pkgs.callPackage ../pkgs/vimPlugins/taxi-vim.nix { };
+  };
+
+  fishPlugins = prev.fishPlugins // {
+    autopair = prev.pkgs.callPackage ../pkgs/fishPlugins/autopair.nix { };
+    colored_man_pages = prev.pkgs.callPackage ../pkgs/fishPlugins/colored_man_pages.nix { };
+    tide = prev.pkgs.callPackage ../pkgs/fishPlugins/tide.nix { };
   };
 
   generated-gtk-themes = mapAttrs (_: scheme: gtkThemeFromScheme { inherit scheme; }) colorSchemes;
