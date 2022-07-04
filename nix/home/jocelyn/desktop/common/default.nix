@@ -8,6 +8,7 @@
     ./firefox.nix
     ./font.nix
     ./gammastep.nix
+    ./gnome-keyring.nix
     ./gtk.nix
     ./kdeconnect.nix
     ./kitty

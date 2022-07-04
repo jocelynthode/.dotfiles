@@ -31,12 +31,11 @@
     kdeconnect.enable = true;
   };
 
-  services.dbus.packages = [ pkgs.gcr ];
-
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
+      gnome.gnome-keyring
     ];
   };
 

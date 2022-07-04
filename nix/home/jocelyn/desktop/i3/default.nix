@@ -28,8 +28,6 @@
       # Without this gnome-keyring does not work
       profileExtra = ''
         ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-        eval $(${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon --daemonize --components=ssh,secrets,pkcs11)
-        export SSH_AUTH_SOCK
       '';
       windowManager.i3 = {
         enable = true;
