@@ -5,37 +5,72 @@ in
 {
   home.packages = with pkgs; [ discord discocss ];
 
+  xdg.configFile."discocss/preload.js".text = ''
+    module.exports = () => {
+    const fs = require("fs");
+    const confDir = "/home/jocelyn/.config/discocss";
+    const cssFile = "/home/jocelyn/.config/discocss/custom.css";
+
+    function reload(style) {
+      style.innerHTML = fs.readFileSync(cssFile);
+    }
+
+    function inject({ document, window }) {
+      window.addEventListener("load", () => {
+        const style = document.createElement("style");
+        reload(style);
+        document.head.appendChild(style);
+
+        fs.watch(confDir, {}, () => reload(style));
+      });
+    }
+
+    inject(require("electron").webFrame.context);
+    };
+
+    module.exports.mw = (mainWindow) => {
+      mainWindow.setBackgroundColor("#00000000");
+    };
+
+    module.exports.mo = (options) => {
+      options.transparent = true;
+      if (process.platform === "linux") {
+        options.frame = true;
+      }
+    };
+  '';
+
   xdg.configFile."discocss/custom.css".text = ''
     .theme-dark {
-        --header-primary: #${colors.base05};
+        --header-primary: #${colors.base07};
         --header-secondary: #${colors.base04};
-        --text-normal: #${colors.base05};
+        --text-normal: #${colors.base07};
         --text-muted: #${colors.base04};
         --text-link: #${colors.base08};
-        --channels-default: #${colors.base05};
+        --channels-default: #${colors.base07};
         --interactive-normal: #${colors.base04};
-        --interactive-hover: #${colors.base05};
-        --interactive-active: #${colors.base05};
+        --interactive-hover: #${colors.base07};
+        --interactive-active: #${colors.base07};
         --interactive-muted: #${colors.base03};
         --background-primary: #${colors.base00};
         --background-secondary: #${colors.base01};
         --background-secondary-alt: #${colors.base02};
-        --background-tertiary: #${colors.base01};
-        --background-accent: #${colors.base01};
+        --background-tertiary: #${colors.base03};
+        --background-accent: #${colors.base00};
         --background-floating: #${colors.base00};
         --background-mobile-primary: var(--background-primary);
         --background-mobile-secondary: var(--background-secondary);
         --background-modifier-selected: var(--background-secondary);
-        --scrollbar-thin-thumb: #${colors.base02};
-        --scrollbar-auto-thumb: #${colors.base02};
-        --scrollbar-auto-track: #${colors.base01};
-        --scrollbar-auto-scrollbar-color-thumb: #${colors.base02};
-        --scrollbar-auto-scrollbar-color-track: #${colors.base01};
+        --scrollbar-thin-thumb: #${colors.base01};
+        --scrollbar-auto-thumb: #${colors.base01};
+        --scrollbar-auto-track: #${colors.base00};
+        --scrollbar-auto-scrollbar-color-thumb: #${colors.base01};
+        --scrollbar-auto-scrollbar-color-track: #${colors.base00};
         --focus-primary: #${colors.base08};
-        --channeltextarea-background: #${colors.base01};
-        --deprecated-card-bg: #${colors.base01};
-        --deprecated-quickswitcher-input-background: #${colors.base01};
-        --deprecated-quickswitcher-input-placeholder: #${colors.base05};
+        --channeltextarea-background: #${colors.base00};
+        --deprecated-card-bg: #${colors.base00};
+        --deprecated-quickswitcher-input-background: #${colors.base00};
+        --deprecated-quickswitcher-input-placeholder: #${colors.base07};
         --background-modifier-hover: var(--background-secondary);
         --background-modifier-active: var(--background-secondary-alt);
         --activity-card-background: var(--background-secondary);
