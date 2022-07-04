@@ -2,6 +2,7 @@
   boot = {
     initrd = {
       availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+      kernelModules = [ "kvm-amd" ];
       postDeviceCommands = lib.mkBefore ''
         mkdir -p /mnt
         mount -o subvol=/ /dev/disk/by-label/root /mnt
