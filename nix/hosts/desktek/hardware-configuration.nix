@@ -30,6 +30,12 @@
       options = [ "defaults,noatime,compress=zstd:1,subvol=@" ];
     };
 
+    "/var/log" = {
+      device = "/dev/disk/by-label/root";
+      fsType = "btrfs";
+      options = [ "defaults,noatime,compress=zstd:1,subvol=log" ];
+    };
+
     "/nix" = {
       device = "/dev/disk/by-label/root";
       fsType = "btrfs";

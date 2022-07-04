@@ -27,7 +27,6 @@
       "/var/lib/systemd"
       "/var/lib/bluetooth"
       "/etc/mullvad-vpn"
-      "/var/log"
       "/etc/nixos"
     ];
     files = [
@@ -44,8 +43,8 @@
         "Liip"
         ".local/share/networkmanagement/certificates"
         "go"
-	".config/fish"
-	".local/share/fish"
+        ".config/fish"
+        ".local/share/fish"
 
         { directory = ".ssh"; mode = "0700"; }
         { directory = ".local/share/keyrings"; mode = "0700"; }
@@ -63,9 +62,13 @@
         ".config/Slack"
         ".config/spotify"
         ".config/kdeconnect"
+        ".cache/betterlockscreen"
 
-	# TODO remove
-	".dotfiles"
+        # TODO remove
+        ".dotfiles"
+      ];
+      files = [
+        ".config/pavucontrol.ini"
       ];
     };
   };
