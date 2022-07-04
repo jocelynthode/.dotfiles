@@ -204,7 +204,7 @@
             "7" = [
               { class = "Signal"; }
               { class = "Slack"; }
-              { class = "Discord"; }
+              { class = "discord"; }
               { class = "Mumble"; }
             ];
             "9" = [

@@ -17,4 +17,20 @@
     rev = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
     sha256 = "sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
   };
+
+  # Allow firefox to open folder in ranger
+  xdg.desktopEntries = {
+    ranger = {
+      name = "Ranger";
+      type = "Application";
+      comment = "Launcher the ranger file manager";
+      exec = "kitty ranger";
+      icon = "utilities-terminal";
+      mimeType = [
+        "inode/directory"
+      ];
+      terminal = false;
+      categories = [ "ConsoleOnly" ];
+    };
+  };
 }
