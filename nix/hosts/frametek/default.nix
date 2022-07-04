@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, nix-colors, hostname, ... }: {
+{ pkgs, inputs, config, hostname, ... }: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-gpu-intel
@@ -47,7 +47,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs nix-colors; }; # Pass flake variable
+    extraSpecialArgs = { inherit inputs; }; # Pass flake variable
   };
 
 

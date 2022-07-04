@@ -21,7 +21,7 @@ in
   });
 
   vimPlugins = prev.vimPlugins // {
-    taxi-vim = prev.pkgs.callPackage ../pkgs/vimPlugins/taxi-vim { }; 
+    taxi-vim = prev.pkgs.callPackage ../pkgs/vimPlugins/taxi-vim { };
   };
 
   generated-gtk-themes = mapAttrs (_: scheme: gtkThemeFromScheme { inherit scheme; }) colorSchemes;

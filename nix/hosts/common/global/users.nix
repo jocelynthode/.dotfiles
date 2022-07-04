@@ -1,4 +1,4 @@
-{ pkgs, config, lib, home-manager, ... }: {
+{ pkgs, inputs, config, lib, home-manager, ... }: {
   users = {
     mutableUsers = false;
     users = {
